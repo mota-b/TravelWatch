@@ -1,0 +1,49 @@
+/* COLORS */
+/* #ff996a Orange */
+/* #6ad0ff Blue */
+/* #cb6aff Purple */
+/* #ffe66a Yello */
+
+
+/* Global */
+body {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+.section{
+  padding-top: 60px;
+  height: 100vh;
+}
+
+/* Sections */
+#landing{
+  background-color:#ff996a; 
+}
+#feature{
+  background-color:#6ad0ff; 
+}
+#about{
+  background-color:#cb6aff; 
+}
+#contact{
+  background-color:#ffe66a; 
+}
+
+/* Landing */
+#landing .container{
+  margin-top:16vh;
+}
+#landing h1,h3,p{
+  color: snow;
+}
+#landing h1{
+  font: 100px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+#landing h3{
+  font: 52px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+#landing p{
+  font: 35px "Lucida Grande", Helvetica, Arial, sans-serif;
+}

@@ -1,0 +1,28 @@
+/* body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+} */
+
+/* Global */
+body {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+.section{
+  padding-top: 60px;
+  height: 100vh;
+}
+#db-table{
+  background-color: #6ad0ff;
+}
+
+#db-table #dtBasicExample{
+  background-color: snow
+  ;
+}

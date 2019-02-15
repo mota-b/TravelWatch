@@ -1,0 +1,55 @@
+
+
+/* Global */
+body {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px ;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#main-content{
+  margin: 0px !important;
+  padding: 0px !important;
+  height: 100vh;
+  width: 100vw;
+  background-color: #4bbfc3;
+  max-width: 100000px !important;
+}
+#main-content .row{
+  height: 100%;
+  width: 100%;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+#confirmation{
+  height: 100vh;
+  width: 100vw ;
+  background-color: #6ad0ff;
+  padding-top: 36vh;
+}  
+#confirmation h1{
+  color: snow;
+  font-weight: 800;
+  text-align: center;
+  font-size: 64px;
+  
+}
+
+/* area1 */
+#area-1{
+  background-color: #1bbc9b;
+  height: 100%;
+  width: 100%;
+}
+#area-2{
+  display: none;
+  background-color: #4bbfc3;
+  height: 100%;
+  width: 100%;
+}
+
+.card{
+  margin-top: 20vh;
+}
+

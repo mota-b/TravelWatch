@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    
+    <!-- Stylesheets -->
+    <%- include('../requireViews/linksView.ejs', {}) %>
+
+  </head>
+  <body>
+    
+    <%- include('../navBarView.ejs', {}) %>
+    
+    <!-- Login Container-->
+    <div id="main-content" canvas="container">
+        
+      <div id="area-1">
+        <div class="containe">
+          <div class="row justify-content-md-center">
+              <div class="right-1 col col-xs-12 col-sm-10 allign-self-end">
+                <!-- Log form -->
+                <%- include('login_form.ejs', {}) %>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="area-2">
+          <div class="containe">
+            <div class="row justify-content-md-center">
+                <div class="right-1 col col-xs-12 col-sm-10 allign-self-end">
+                  <!-- Log form -->
+                  <%- include('register_form.ejs', {}) %>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div><!-- END Login Container-->
+
+
+
+    <!-- Scripts -->
+    <%- include('../requireViews/scriptsView.ejs', {}) %>
+  </body>
+</html>

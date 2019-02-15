@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    
+    <!-- Stylesheets -->
+    <%- include('./requireViews/linksView.ejs', {}) %>
+
+  </head>
+  <body>
+
+    <%- include('./navBarView.ejs', {}) %>
+    
+    <!-- landing -->
+    <div id="landing" class="section">
+      <div class="container">
+        <div class="row justify-content-md-center">
+          <div class="col-sm-12 allign-self-start">
+              <h1>Full stack Web Kit</h1>
+          </div>
+          <div class="col-sm-8 allign-self-center">
+              <h3>Think onece, Think Wise</h3>
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-sm-10 allign-self-center">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque illo exercitationem in, unde repudiandae eos harum dolore? Molestias, cupiditate amet porro fugit in minima incidunt esse reprehenderit officiis dicta quod!</p>
+            </div>  
+        </div>
+      </div>
+      
+      
+    </div><!-- END landing -->
+    
+    <!-- feature -->
+    <div id="feature" class="section"></div><!-- END feature -->
+    
+    <!-- about -->
+    <div id="about" class="section"></div><!-- END about -->
+    
+    <!-- contact -->
+    <div id="contact" class="section"></div><!-- END contact -->
+
+
+
+    <!-- Scripts -->
+    <%- include('./requireViews/scriptsView.ejs', {}) %>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    
+    <!-- Stylesheets -->
+    <%- include('../requireViews/linksView.ejs', {}) %>
+
+  </head>
+  <body>
+    
+    <h1>ErrorView</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1><%= error.message %></h1>
+                <h2><%= error.status %></h2>
+                <pre><%= error.stack %></pre>
+            </div>
+        </div>    
+    </div>
+    
+
+
+    <!-- Scripts -->
+    <%- include('../requireViews/scriptsView.ejs', {}) %>
+  </body>
+</html>
+
