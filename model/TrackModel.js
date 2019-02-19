@@ -4,7 +4,10 @@ let mongoose = require("mongoose"),
 
 // The schema
 let TrackSchema = new Schema({
+    manager_id: String,
+    
     track_name: String, 
+    
     entity_ids: []
 }) 
 

@@ -1,6 +1,6 @@
 let router = require('express').Router(),
     passport = require("passport")
-    User = require("../../../model/userModel")
+    EntityManager = require("../../../model/EntityManagerModel")
 
 
 // Create
@@ -11,7 +11,7 @@ router.post("/", (req, res, next) => {
 // Read List
 router.get("/", passport.authenticate('jwt', {session:false}), (req, res, next) => {
     // Return Users list
-    User.find({}, (err, users) => {
+    EntityManager.find({}, (err, users) => {
         if (users){
             let data = [];
             users.forEach( (user) => {
@@ -32,7 +32,7 @@ router.get("/", passport.authenticate('jwt', {session:false}), (req, res, next) 
 router.get("/:id",passport.authenticate('jwt', {session:false}), (req, res, next) => {
     let id = req.params['id']
     if(req.params && id){
-        User.findById(id, (err, user) => {
+        EntityManager.findById(id, (err, user) => {
             if(user){
                 res.json(user)
             }
@@ -51,7 +51,7 @@ router.put("/:id", passport.authenticate('jwt', {session:false}), (req, res, nex
 
     console.log(update_options);
     
-    User.findOneAndUpdate(
+    EntityManager.findOneAndUpdate(
         {_id: id},
         {$set:update_options},
         (err, user) =>{

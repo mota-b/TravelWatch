@@ -59,7 +59,7 @@ var Admin = mongoose.model('admin', AdminSchema);
 
 // Fast create element
 let fastElem = () => {
-    newElem = new User({
+    newElem = new Admin({
         username: "Admin0",
         email: "a@g.com",
         password : Admin.generatePassword("0000")

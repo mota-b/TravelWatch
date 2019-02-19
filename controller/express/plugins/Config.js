@@ -26,9 +26,9 @@ module.exports = function (app) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     
-    app.use(session({
-         secret: process.env.SESSION_SECRET,
-         resave: false,
-         saveUninitialized: false
-    }));    
+    // app.use(session({
+    //      secret: process.env.SESSION_SECRET,
+    //      resave: false,
+    //      saveUninitialized: false
+    // }));    
 }

@@ -10,6 +10,7 @@ let EntityManagerSchema = new Schema({
     username: {type: String, require: true, unique: true},
     password: {type: String, require: true},
     manager_location: String,
+    
     track_ids: []
 }) 
 

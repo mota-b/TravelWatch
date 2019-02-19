@@ -4,16 +4,17 @@ let router = require('express').Router(),
     transporter = nodemailer.createTransport({
         service: "gmail",
         auth: { user: "kaizen.org.dz@gmail.com", pass: "kaizen.org24" }
-    });
+    }),
+    EntityManager = require("../../../model/EntityManagerModel");
 
 // Register
 router.post("/reg", (req, res, next) => {  
 
     let {username, email, password} = req.body
     console.log({username, email, password});
-    
+
     // Verify if someon registered with the same email or username
-    User.findOne({ $or: [{ email: email}, { username: username}]}, (err, user) => {
+    EntityManager.findOne({ $or: [{ email: email}, { username: username}]}, (err, user) => {
 
         // the email or username exist in the DB
         if (user) {
@@ -21,7 +22,7 @@ router.post("/reg", (req, res, next) => {
         }// the email and username does not exist in the DB
          else {
               
-            var hash = User.generatePassword(password)
+            var hash = EntityManager.generatePassword(password)
             // no error while crypting the pass word
             if (hash) {
                 
@@ -37,7 +38,7 @@ router.post("/reg", (req, res, next) => {
                  */
 
                 // building the token
-                var token = User.generateEmailJWT(
+                var token = EntityManager.generateJWT(
                      newUser,
                     { expiresIn: "20m" }
                 );
@@ -92,12 +93,18 @@ router.get("/confirmation/:token", (req, res, next) => {
 
     //let {username, email, password} = req.body
     let {token} = req.params,
-        decode = User.verifyJWT(token);
-
+        decode = EntityManager.verifyJWT(token);
+    console.log(decode);
+    console.log("decode");
+    
     if(decode){
-        console.log(decode.tokenUser);
-        
-        newUser = new User(decode.tokenUser)
+        console.log(decode._id);
+        let tokenUser = decode._id;
+        newUser = new EntityManager({
+            email: tokenUser.email,
+            username: tokenUser.username,
+            password: tokenUser.password
+        })
         newUser.save()
 
         res.send(
@@ -129,6 +136,29 @@ router.post("/log", function(req, res, next){
         strategies = ['local']
     if (strategies[strat_number]) {
         passport.authenticate( strategies[strat_number], (err, data, info) => {
+            // This is the result authentication callback
+            
+            
+            //Verify if The authentification has succeded
+            if(data){
+                data.remember = remember
+                res.json(data)
+            }else{
+                res.json({error : info})
+            }
+        })(req, res, next)    
+    }else{
+        res.json({error : {message: "not a valid strategie"}})
+    }
+})
+
+// Login {Asmin}
+router.post("/log/admin", function(req, res, next){  
+    //console.log(req.body);
+    let {remember} = req.body
+    
+    if (strategies[strat_number]) {
+        passport.authenticate( 'admin', (err, data, info) => {
             // This is the result authentication callback
             
             
