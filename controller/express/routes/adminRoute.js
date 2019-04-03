@@ -1,14 +1,16 @@
 let router = require('express').Router(),
-    pagesManager = require("../plugins/PagesManager")("admin");
+  pagesManager = require("../plugins/PagesManager"), 
+  {links, scripts} = pagesManager.style_and_scripts("admin");
 
-/* GET admin page. */
-router.get('/', function(req, res, next) {
+
+/* Get admin */
+router.get('/', function(req, res, next){
   res.render('adminViews/adminView', { 
     title: 'Admin', 
-    links: pagesManager.links,
-    scripts: pagesManager.scripts
+    links: links,
+    scripts: scripts
   });
+})
 
-});
 
 module.exports = router;

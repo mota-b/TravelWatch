@@ -33,7 +33,7 @@ AdminSchema.statics.generateJWT = (data, options) => {
             {
                 _id: data
             },
-            process.env.ADMIN_SECRET,
+            process.env.ADMIN_TOKEN_SECRET,
             options
         );
     }else{
@@ -41,7 +41,7 @@ AdminSchema.statics.generateJWT = (data, options) => {
             {
                 _id: data
             },
-            process.env.ADMIN_SECRET,
+            process.env.ADMIN_TOKEN_SECRET,
             { expiresIn: "1d" }
         );
     }
@@ -50,7 +50,7 @@ AdminSchema.statics.generateJWT = (data, options) => {
 
 // Verify the token
 AdminSchema.statics.verifyJWT = (token) => {
-    return jwt.verify(token, process.env.ADMIN_SECRET,{})   
+    return jwt.verify(token, process.env.ADMIN_TOKEN_SECRET,{})   
 }
 
 // The model
@@ -60,8 +60,7 @@ var Admin = mongoose.model('admin', AdminSchema);
 // Fast create element
 let fastElem = () => {
     newElem = new Admin({
-        username: "Admin0",
-        email: "a@g.com",
+        username: "admin",
         password : Admin.generatePassword("0000")
     })
     

@@ -152,12 +152,15 @@ router.post("/log", function(req, res, next){
     }
 })
 
-// Login {Asmin}
+// Login {Admin}
 router.post("/log/admin", function(req, res, next){  
     //console.log(req.body);
     let {remember} = req.body
+    console.log("hi");
+    console.log(req.body);
     
-    if (strategies[strat_number]) {
+    
+    //if (strategies[strat_number]) {
         passport.authenticate( 'admin', (err, data, info) => {
             // This is the result authentication callback
             
@@ -170,9 +173,9 @@ router.post("/log/admin", function(req, res, next){
                 res.json({error : info})
             }
         })(req, res, next)    
-    }else{
-        res.json({error : {message: "not a valid strategie"}})
-    }
+    // }else{
+    //     res.json({error : {message: "not a valid strategie"}})
+    // }
 })
 
     

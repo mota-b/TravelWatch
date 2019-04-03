@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        
+        <!-- Stylesheets -->
+        <%- include('./requireViews/linksView.ejs', {}) %>
+
+    </head>
+    <body>
+        
+    
+        <div class="container-fluid">
+            <div class="container">
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="preloader1">
+                            <div class="loader loader-inner-1">
+                                <div class="loader loader-inner-2">
+                                <div class="loader loader-inner-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="h3 text-white">Loading ... </h3>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script>
+            // requested page after preloader
+            page = "<%= page %>"
+        </script>
+
+        <%- include('./requireViews/scriptsView.ejs', {}) %>
+    </body>
+
+</html>

@@ -1,7 +1,7 @@
 let router = require('express').Router(),
-    passport = require("passport")
-    EntityManager = require("../../../model/EntityManagerModel")
-
+    
+    EntityManager = require("../../../model/EntityManagerModel"),
+    restriction = require("./apiRestriction")
 
 // Create
 router.post("/", (req, res, next) => {
@@ -9,7 +9,7 @@ router.post("/", (req, res, next) => {
 })
 
 // Read List
-router.get("/", passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.get("/", restriction, (req, res, next) => {
     // Return Users list
     EntityManager.find({}, (err, users) => {
         if (users){
@@ -18,18 +18,24 @@ router.get("/", passport.authenticate('jwt', {session:false}), (req, res, next) 
                 data.push({
                     _id: user._id,
                     username: user.username,
-                    email: user.email, 
-                    isAdmin: user.isAdmin   
+                    email: user.email
                 })
             });
 
-            res.json(data)
+            let user_schema = [
+                "_id",
+                "username", 
+                "email"
+            ]
+
+            res.json({collection: data, schema: user_schema})
         }
     })
 })
 
+
 // Read One
-router.get("/:id",passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.get("/:id", restriction, (req, res, next) => {
     let id = req.params['id']
     if(req.params && id){
         EntityManager.findById(id, (err, user) => {
@@ -43,14 +49,13 @@ router.get("/:id",passport.authenticate('jwt', {session:false}), (req, res, next
 })
     
 // Update
-router.put("/:id", passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.put("/:id", restriction, (req, res, next) => {
+    
     let {user_updated} = req.body,
         {id} = req.params
    
     let update_options = JSON.parse(user_updated)     
 
-    console.log(update_options);
-    
     EntityManager.findOneAndUpdate(
         {_id: id},
         {$set:update_options},
@@ -68,8 +73,23 @@ router.put("/:id", passport.authenticate('jwt', {session:false}), (req, res, nex
 })
 
 // Delete
-router.delete("/", passport.authenticate('jwt', {session:false}), (req, res, next) => {
+router.delete("/:id", restriction, (req, res, next) => {
+    console.log("hnaya delete")
 
+    let  {id} = req.params
+
+    EntityManager.findOneAndDelete(
+        {_id: id},
+        (err, user) =>{
+            if(!err){
+                res.json({isDeleted:true})
+            }else{
+                res.json({isDeleted:false})
+            }
+            
+        }
+    )
+    
 })
   
 

@@ -1,11 +1,3 @@
-/* body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
-} */
 
 /* Global */
 body {
@@ -13,16 +5,47 @@ body {
   padding: 0px;
   margin: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #6ad0ff
 }
 .section{
   padding-top: 60px;
   height: 100vh;
 }
+
+
+
+
+/* admin_log */
+#log, #log_form{
+  width: 100vw;
+  height: 100vh;
+  transform: scale(0.9);
+  
+}
+#log{background: transparent}
+#log_form{
+  background-color: snow
+}
+
+/* admin_dashboard */
+#dashboard{
+  display: none;
+}
+#get_collection_form{
+  
+}
+.form-control{
+  margin: 6px;
+}
+
 #db-table{
   background-color: #6ad0ff;
 }
 
+#dtBasicExample_wrapper{
+  width: 100%;
+  /* background-color: snow; */
+}
 #db-table #dtBasicExample{
-  background-color: snow
-  ;
+  background-color: snow;
 }
