@@ -14,30 +14,128 @@
     <!-- Login Container-->
     <div id="main-content" canvas="container">
         
+      <!-- Login area -->
       <div id="area-1">
         <div class="containe">
           <div class="row justify-content-md-center">
-              <div class="right-1 col col-xs-12 col-sm-10 allign-self-end">
+              <div class="right-1 col col-xs-12 col-md-9  allign-self-center">
                 <!-- Log form -->
                 <%- include('login_form.ejs', {}) %>
               </div>
           </div>
         </div>
-      </div>
+      </div> <!-- END Loing area -->
 
+      <!-- Register area -->
       <div id="area-2">
           <div class="containe">
+            
+            
             <div class="row justify-content-md-center">
-                <div class="right-1 col col-xs-12 col-sm-10 allign-self-end">
-                  <!-- Log form -->
-                  <%- include('register_form.ejs', {}) %>
-                </div>
+              
+              <!-- Register as Company -->
+              <div class="right-1 col col-sm-6 col col-md-5  allign-self-center">
+                  
+                  <!-- Card -->
+                  <div class="card">
+
+                      <!-- Card image -->
+                      <img class="card-img-top img-register-choice img-company" src="/img/company.png" alt="Card image cap">
+                    
+                      <!-- Card content -->
+                      <div class="card-body">
+                    
+                        <!-- Title -->
+                        <h4 class="card-title"><a>Register as a Company</a></h4>
+                        <!-- Text -->
+                        <p class="card-text">Companies can have their own tracking service on their own elements of interest , monitored by One or more Operators</p>
+                        <!-- Button -->
+            
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#form-register-asCompany" >Register</a>
+                    
+                      </div>
+                    
+                  </div>
+                  <!-- Card -->
+  
+              </div> <!-- END Register as Company -->
+               
+              <!-- Register as Mate -->
+              <div class="right-1 col col-sm-6 col-md-5  allign-self-center">
+                  <!-- Card -->
+                  <div class="card">
+
+                      <!-- Card image -->
+                      <img  class="card-img-top img-register-choice img-mate" src="/img/mate.png" alt="Card image cap">
+                    
+                      <!-- Card content -->
+                      <div class="card-body">
+                    
+                        <!-- Title -->
+                        <h4 class="card-title"><a>Register as a Mate</a></h4>
+                        <!-- Text -->
+                        <p class="card-text">Companies can track Mates wich are friend, part of the same group or applied to the same Event </p>
+                        <!-- Button -->
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#form-register-asMate">Register</a>
+                    
+                      </div>
+                    
+                  </div>
+                  <!-- Card -->
+                  
+              </div> <!-- END Register as Mate -->
+
             </div>
+            <div class="row justify-content-md-center">
+                
+              <div class="col col-sm-9 allign-self-center" id="exist-acount">
+
+                <!-- LogIn -->  
+                
+                <p class="text-center">
+                    Already have an acount ? <Button id="b_sign" class="btn btn-warning allign-self-center "> LogIn</Button>
+                  </p>
+
+              </div>
+              
+            </div>
+             
+
           </div>
-        </div>
+      </div><!-- END Register area -->
+
     </div><!-- END Login Container-->
 
+    <!-- Modals -->
+    <!-- Modal Register as a Company -->
+    <div class="modal fade" id="form-register-asCompany" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-body">
+              <%- include('./register_form_asCompany', {}) %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <!-- Modal Register as a mate -->
+    <div class="modal fade" id="form-register-asMate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-body">
+              <%- include('./register_form_asMate', {}) %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
 
+
+    
 
     <!-- Scripts -->
     <%- include('../requireViews/scriptsView.ejs', {}) %>

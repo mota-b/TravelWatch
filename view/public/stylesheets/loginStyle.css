@@ -53,3 +53,26 @@ body {
   margin-top: 20vh;
 }
 
+.img-register-choice{
+  height: 400px;
+  width: 100%;
+  align-self: center;
+}
+.img-company{
+  background-color: #ff996a
+}
+.img-mate{
+  background-color: #6ad0ff;
+}
+
+.right-1 .card{
+  margin-top: 6%;
+  transform: scale(0.8);
+}
+#exist-acount{
+  margin-top: 1%;
+    padding-top: 1%;
+    background-color: #ff996a;
+    color: white;
+    border-radius: 200px;
+}

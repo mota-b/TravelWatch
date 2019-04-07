@@ -5,87 +5,169 @@ let router = require('express').Router(),
         service: "gmail",
         auth: { user: "kaizen.org.dz@gmail.com", pass: "kaizen.org24" }
     }),
-    EntityManager = require("../../../model/EntityManagerModel");
+    CompanyManager = require("../../../model/CompanyManagerModel");
 
 // Register
 router.post("/reg", (req, res, next) => {  
+    let {username, email, password, company_name} = req.body;
 
-    let {username, email, password} = req.body
-    console.log({username, email, password});
+    
+    if(company_name){
+        // Verify if someon registered with the same email or username
+        CompanyManager.findOne({ $or: [{ email: email}, { username: username}, { company_name: company_name}]}, (err, user) => {
 
-    // Verify if someon registered with the same email or username
-    EntityManager.findOne({ $or: [{ email: email}, { username: username}]}, (err, user) => {
-
-        // the email or username exist in the DB
-        if (user) {
-            res.json({ error: {message: "email or username already used" } });
-        }// the email and username does not exist in the DB
-         else {
-              
-            var hash = EntityManager.generatePassword(password)
-            // no error while crypting the pass word
-            if (hash) {
-                
-                // Create a user object with comming data
-                var newUser = {
-                    email: email,
-                    username: username,
-                    password: hash,
-                };
-
-                /**
-                 * building & sending the confirmation email 
-                 */
-
-                // building the token
-                var token = EntityManager.generateJWT(
-                     newUser,
-                    { expiresIn: "20m" }
-                );
-                
-
-                // building the email with the confirmation link nested with token
-                var url = process.env.SITE_URL + "/api/login/confirmation/" + token;
-                var emailUser = newUser.email;
-                var mailOptions = {
-                    from: "kaizen.org.dz@gmail.com",
-                    to: emailUser,
-                    subject: "Account Verification Token",
-                    text:
-                        "\nHello,\n\n" +
-                        "Please activate your account by clicking this link : \n\n " +
-                        url 
-
-                        
-                };
-
-                // Sending the email of confirmation to activate the user acount
-                transporter.sendMail(mailOptions, function (err) {
-                    if (err) {
-                        console.log(
-                            "fail to send mail :" + err.message
-                        );
-                        res.status(500).json({
-                            message:
-                                "fail to send mail :" +
-                                err.message
-                        });
-                    }
-                    else{
-                        res.json({error : {message: "error sending confirmation email"}})
-                    }
-                });
-
-                res.json({redirect:"/login/confirmation"})
-
+            // the email or username exist in the DB
+            if (user) {
+                res.json({ error: {message: "email or username already used" } });
+            }// the email and username does not exist in the DB
+             else {
+                  
+                var hash = EntityManager.generatePassword(password)
+                // no error while crypting the pass word
+                if (hash) {
+                    
+                    // Create a user object with comming data
+                    var newUser = {
+                        email: email,
+                        username: username,
+                        password: hash,
+                    };
+    
+                    /**
+                     * building & sending the confirmation email 
+                     */
+    
+                    // building the token
+                    var token = EntityManager.generateJWT(
+                         newUser,
+                        { expiresIn: "20m" }
+                    );
+                    
+    
+                    // building the email with the confirmation link nested with token
+                    var url = process.env.SITE_URL + "/api/login/confirmation/" + token;
+                    var emailUser = newUser.email;
+                    var mailOptions = {
+                        from: "kaizen.org.dz@gmail.com",
+                        to: emailUser,
+                        subject: "Account Verification Token",
+                        text:
+                            "\nHello,\n\n" +
+                            "Please activate your account by clicking this link : \n\n " +
+                            url 
+    
+                            
+                    };
+    
+                    // Sending the email of confirmation to activate the user acount
+                    transporter.sendMail(mailOptions, function (err) {
+                        if (err) {
+                            console.log(
+                                "fail to send mail :" + err.message
+                            );
+                            res.status(500).json({
+                                message:
+                                    "fail to send mail :" +
+                                    err.message
+                            });
+                        }
+                        else{
+                            res.json({error : {message: "error sending confirmation email"}})
+                        }
+                    });
+    
+                    res.json({redirect:"/login/confirmation"})
+    
+                }
+                // cypher error ocured 
+                else {
+                    console.log(err);
+                    res.json({error:{message:"acount ceration error try later"}})
+                }   
             }
-            // cypher error ocured 
-            else {
-                console.log(err);
-                res.json({error:{message:"acount ceration error try later"}})
-            }   
-        }
-    });
+        });
+         
+    }
+    // else{
+    //     // Verify if someon registered with the same email or username
+    //     Mate.findOne({ $or: [{ email: email}, { username: username}, { company_name: company_name}]}, (err, user) => {
+
+    //         // the email or username exist in the DB
+    //         if (user) {
+    //             res.json({ error: {message: "email or username already used" } });
+    //         }// the email and username does not exist in the DB
+    //          else {
+                  
+    //             var hash = EntityManager.generatePassword(password)
+    //             // no error while crypting the pass word
+    //             if (hash) {
+                    
+    //                 // Create a user object with comming data
+    //                 var newUser = {
+    //                     email: email,
+    //                     username: username,
+    //                     password: hash,
+    //                 };
+    
+    //                 /**
+    //                  * building & sending the confirmation email 
+    //                  */
+    
+    //                 // building the token
+    //                 var token = EntityManager.generateJWT(
+    //                      newUser,
+    //                     { expiresIn: "20m" }
+    //                 );
+                    
+    
+    //                 // building the email with the confirmation link nested with token
+    //                 var url = process.env.SITE_URL + "/api/login/confirmation/" + token;
+    //                 var emailUser = newUser.email;
+    //                 var mailOptions = {
+    //                     from: "kaizen.org.dz@gmail.com",
+    //                     to: emailUser,
+    //                     subject: "Account Verification Token",
+    //                     text:
+    //                         "\nHello,\n\n" +
+    //                         "Please activate your account by clicking this link : \n\n " +
+    //                         url 
+    
+                            
+    //                 };
+    
+    //                 // Sending the email of confirmation to activate the user acount
+    //                 transporter.sendMail(mailOptions, function (err) {
+    //                     if (err) {
+    //                         console.log(
+    //                             "fail to send mail :" + err.message
+    //                         );
+    //                         res.status(500).json({
+    //                             message:
+    //                                 "fail to send mail :" +
+    //                                 err.message
+    //                         });
+    //                     }
+    //                     else{
+    //                         res.json({error : {message: "error sending confirmation email"}})
+    //                     }
+    //                 });
+    
+    //                 res.json({redirect:"/login/confirmation"})
+    
+    //             }
+    //             // cypher error ocured 
+    //             else {
+    //                 console.log(err);
+    //                 res.json({error:{message:"acount ceration error try later"}})
+    //             }   
+    //         }
+    //     });
+        
+    // }
+    
+
+    
+    
 })
 
 // Confirmation

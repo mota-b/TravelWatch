@@ -4,6 +4,9 @@ $(document).ready(function(){
     
     // Admin and user session
     verifySession()    
+
+    // Navigation ui
+    user_nav()
 })
 
 
@@ -19,6 +22,35 @@ function verifySession(){
         user = JSON.parse(sessionStorage.getItem("user")) 
     }
     
+   
+
+    // Check the admin log
+    admin = null;
+    if(sessionStorage.getItem("admin")){
+        admin = JSON.parse(sessionStorage.getItem("admin"))
+    }
+    
+
+}
+
+// Navigation ui
+function user_nav(){
+    // admin ui if loged
+    if(admin){
+        
+        $(".navbar-nav").append(
+            "   <li class='nav-item dropdown active '>"
+    
+            +"      <a class='nav-link btn-outline-warning waves-effect' href='/admin' id='navbarDropdownMenuLink-4'>"
+            +"          Admin "
+            +"      </a>"
+        
+            +"  </li>"
+        )
+    }
+
+
+    // user ui if loged
     if(user){
         $("#log_link").html("")
         
@@ -34,26 +66,6 @@ function verifySession(){
             
         )
 
-    }
-
-
-    // Check the admin log
-    admin = null;
-    if(sessionStorage.getItem("admin")){
-        admin = JSON.parse(sessionStorage.getItem("admin"))
-    }
-    if(admin){
-        console.log("yes");
-        
-        $(".navbar-nav").append(
-            "   <li class='nav-item dropdown active '>"
-    
-            +"      <a class='nav-link btn-outline-warning waves-effect' href='#' id='navbarDropdownMenuLink-4'>"
-            +"          Admin "
-            +"      </a>"
-        
-            +"  </li>"
-        )
     }
 
 }

@@ -18,7 +18,7 @@ module.exports = function(app){
     //app.use(passport.session()); // bind the passport session with express session (only 1 session here)
 
      
-    // Inegrating the admin-local Strategy ==> call it with : passport.authenticate('admin')
+    // Inegrating the 'local' (admin) logIn Strategy ==> call it with : passport.authenticate('admin')
     passport.use('admin', new LocalStrategy( 
         {
             username: "username",
@@ -53,15 +53,15 @@ module.exports = function(app){
         } 
     ))
 
-    // Inegrating the local Strategy ==> call it with : passport.authenticate('local')
-    passport.use(new LocalStrategy( 
+    // Inegrating the 'local' (company manager) logIn Strategy ==> call it with : passport.authenticate('c_manager')
+    passport.use('c_manager', new LocalStrategy( 
         {
             username: "username",
             password: "password"
         },
         (username, password, done) => {
 
-            EntityManager = require("../../../model/EntityManagerModel")
+            CompanyManager = require("../../../model/CompanyManagerModel")
             //console.log("This is The 'local' local strategy");
             
             // Verify if the user logIn with username or email
@@ -79,20 +79,19 @@ module.exports = function(app){
             }
             
             // Find a matching user to logIn            
-            EntityManager.findOne({ $or: [{ email: filter.email}, { username: filter.username}]},  (err, user) => {     
+            CompanyManager.findOne({ $or: [{ email: filter.email}, { username: filter.username}]},  (err, c_manager) => {     
                 // Verify if the user is found && the password
-                console.log(user);
+                console.log(c_manager);
                 
-                if(user && user.verifyPassword(password, user.password)){
+                if(c_manager && c_manager.verifyPassword(password, c_manager.password)){
                     
                     let result = {
                         ui_data: {
                             username: user.username,
                             email : user.email,
                             _id: user._id,
-                            isAdmin: user.isAdmin
                         },
-                        token : EntityManager.generateJWT(user._id)
+                        token : CompanyManager.generateJWT(c_manager._id)
                     }
                     done(false, result, null )
                 }else{
@@ -102,7 +101,7 @@ module.exports = function(app){
         } 
     ))
 
-    // Inegrating the jwt Strategy ==> call it with : passport.authenticate('jwt')
+    // Inegrating the 'jwt' (admin) API-TOKEN Strategy ==> call it with : passport.authenticate('admin-jwt')
     passport.use('admin-jwt',new JwtStrategy( 
         {
             jwtFromRequest: ExtractJwt.fromHeader("token"),
@@ -121,10 +120,47 @@ module.exports = function(app){
         }
     ))
 
-    passport.use('api-jwt',new JwtStrategy( 
+    // Inegrating the 'jwt' (company) API-TOKEN Strategy ==> call it with : passport.authenticate('company-jwt')
+    passport.use('company-jwt',new JwtStrategy( 
         {
             jwtFromRequest: ExtractJwt.fromHeader("token"),
-            secretOrKey: process.env.API_TOKEN_SECRET
+            secretOrKey: process.env.COMPANY_MANAGER_TOKEN_SECRET
+        },
+        (decode, done) => {
+            console.log("This is The JWT strategy");
+            if(decode){
+                // True token
+                done(false, decode);
+            }else{
+                // True token
+                done(false, null, {message: "token invalid or expired"});
+            }  
+        }
+    ))
+
+    // Inegrating the 'jwt' (mate) API-TOKEN Strategy ==> call it with : passport.authenticate('mate-jwt')
+    passport.use('mate-jwt',new JwtStrategy( 
+        {
+            jwtFromRequest: ExtractJwt.fromHeader("token"),
+            secretOrKey: process.env.MATE_TOKEN_SECRET
+        },
+        (decode, done) => {
+            console.log("This is The JWT strategy");
+            if(decode){
+                // True token
+                done(false, decode);
+            }else{
+                // True token
+                done(false, null, {message: "token invalid or expired"});
+            }  
+        }
+    ))
+
+    // Inegrating the 'jwt' (operator) API-TOKEN Strategy ==> call it with : passport.authenticate('operator-jwt')
+    passport.use('operator-jwt',new JwtStrategy( 
+        {
+            jwtFromRequest: ExtractJwt.fromHeader("token"),
+            secretOrKey: process.env.OPERATOR_TOKEN_SECRET
         },
         (decode, done) => {
             console.log("This is The JWT strategy");

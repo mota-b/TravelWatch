@@ -23,7 +23,31 @@ forms_config = () => {
     })
 
     /* LogIn-SignUp requests */
-    $("#register").submit(function(event){
+    $("#register_asCompany").submit(function(event){
+        event.preventDefault();
+        $.ajax( {
+            url:'/api/login/reg',
+            type:"POST",
+            data:{
+                "company_name": $(this).find("input[name=company_name]").val(),
+                "username": $(this).find("input[name=username]").val(),
+                "email": $(this).find("input[name=email]").val(),
+                "password": $(this).find("input[name=password]").val()
+            },
+            
+            success: function(data) {    
+                if (data.error){ 
+                    alert(data.error.message)
+                }
+                else{
+                    window.location.href = data.redirect;
+                }
+            }  
+        });
+
+        return false;
+    });
+    $("#register_asMate").submit(function(event){
         event.preventDefault();
         $.ajax( {
             url:'/api/login/reg',

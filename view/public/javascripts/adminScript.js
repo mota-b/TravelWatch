@@ -197,7 +197,7 @@ let api_manager = {
                 token: admin.token
             },
             data:{
-                "user_updated": JSON.stringify(item)
+                "update": JSON.stringify(item)
             },
             
             success: function(data) { 

@@ -12,9 +12,9 @@ let LocationSchema = new Schema({
         year: String,
         time: String,  
     },
-    lat_long:{
-        latitude: String,
-        longitude: String
+    lat_lon:{
+        lat: String,
+        lon: String
     },
     asimuth: String
 }) 
