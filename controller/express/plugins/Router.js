@@ -17,11 +17,15 @@ module.exports = function (app) {
 
     // API access
     let loginApi = require('../api/loginApi'),
-        company_managersApi = require('../api/company_managersApi')
-        operatorsApi = require('../api/operatorsApi')
-    
+        company_managersApi = require('../api/company_managersApi'),
+        operatorsApi = require('../api/operatorsApi'),
+        entitiesOfInterestApi = require('../api/entitiesOfInterestApi'),
+        matesApi = require('../api/matesApi');
+
     app.use('/api/login', loginApi);
     app.use('/api/company_managers', company_managersApi);
     app.use('/api/operators', operatorsApi);
+    app.use('/api/entities', entitiesOfInterestApi);
+    app.use('/api/mates', matesApi);
 
 }

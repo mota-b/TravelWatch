@@ -37,7 +37,7 @@ function verifySession(){
 function user_nav(){
     // admin ui if loged
     if(admin){
-        
+        console.log(admin.ui_data.username+" is connected");
         $(".navbar-nav").append(
             "   <li class='nav-item dropdown active '>"
     
@@ -52,6 +52,8 @@ function user_nav(){
 
     // user ui if loged
     if(user){
+        console.log(user.ui_data.username+" is connected");
+        
         $("#log_link").html("")
         
         $("#log_link").html(

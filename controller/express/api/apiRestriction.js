@@ -32,7 +32,7 @@ restriction_1A = (req, res, next) => {
     // let {strat_number} = req.query,
     //     strategies = ['admin-jwt', 'api-jwt']
     // if (strategies[strat_number]) {
-        passport.authenticate( "company-jwt", (err, data, info) => {
+        passport.authenticate( "c_manager-jwt", (err, data, info) => {
             // This is the result authentication callback
             //console.log(data);
             
@@ -119,7 +119,7 @@ restriction_0_1A = (req, res, next) => {
     // let {strat_number} = req.query,
     //     strategies = ['admin-jwt', 'api-jwt']
     // if (strategies[strat_number]) {
-        passport.authenticate( "company-jwt", (err, data, info) => {
+        passport.authenticate( "c_manager-jwt", (err, data, info) => {
             // This is the result authentication callback
             //console.log(data);
             
@@ -151,7 +151,7 @@ restriction_0_1B = (req, res, next) => {
     // let {strat_number} = req.query,
     //     strategies = ['admin-jwt', 'api-jwt']
     // if (strategies[strat_number]) {
-        passport.authenticate( strategies[strat_number], (err, data, info) => {
+        passport.authenticate( "mate-jwt", (err, data, info) => {
             // This is the result authentication callback
             //console.log(data);
             
@@ -166,8 +166,6 @@ restriction_0_1B = (req, res, next) => {
                  
                 // try uper restriction lvl
                 restriction_0(req, res, next)   
-
-                res.json({error : {message: info.message}})
             }
         })(req, res, next)    
     // }else{
@@ -183,7 +181,7 @@ restriction_0_1A_2A = (req, res, next) => {
     // let {strat_number} = req.query,
     //     strategies = ['admin-jwt', 'api-jwt']
     // if (strategies[strat_number]) {
-        passport.authenticate( strategies[strat_number], (err, data, info) => {
+        passport.authenticate( 'operator-jwt', (err, data, info) => {
             // This is the result authentication callback
             //console.log(data);
             
@@ -199,7 +197,6 @@ restriction_0_1A_2A = (req, res, next) => {
                 // try uper restriction lvl
                 restriction_0_1A(req, res, next)   
 
-                res.json({error : {message: info.message}})
             }
         })(req, res, next)    
     // }else{

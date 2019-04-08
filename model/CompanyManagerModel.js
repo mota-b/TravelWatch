@@ -19,7 +19,7 @@ let CompanyManagerSchema = new Schema({
     isCompanyUnlocked: {type: Boolean, default: false},
     
     operators: Array, 
-    Entities: Array 
+    entities: Array 
 }) 
 
 /**
@@ -39,12 +39,13 @@ CompanyManagerSchema.methods.verifyPassword = (password, hash) => {
 // Generate a token
 CompanyManagerSchema.statics.generateJWT = (data, options) => {
     
+    
     if (options){
         return jwt.sign(
             {
                 _id: data
             },
-            process.env.COMPANY_TOKEN_SECRET,
+            process.env.COMPANY_MANAGER_TOKEN_SECRET,
             options
         );
     }else{
@@ -52,7 +53,7 @@ CompanyManagerSchema.statics.generateJWT = (data, options) => {
             {
                 _id: data
             },
-            process.env.COMPANY_TOKEN_SECRET,
+            process.env.COMPANY_MANAGER_TOKEN_SECRET,
             { expiresIn: "1d" }
         );
     }
@@ -62,7 +63,7 @@ CompanyManagerSchema.statics.generateJWT = (data, options) => {
 
 // Verify the token
 CompanyManagerSchema.statics.verifyJWT = (token) => {
-    return jwt.verify(token, process.env.COMPANY_TOKEN_SECRET,{})   
+    return jwt.verify(token, process.env.COMPANY_MANAGER_TOKEN_SECRET,{})   
 }
 
 // The model

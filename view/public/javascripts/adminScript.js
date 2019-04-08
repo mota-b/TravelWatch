@@ -148,15 +148,20 @@ let api_manager = {
                 else{
 
                     //collection = []
-                    data.collection.forEach((item) => {
-                        collection.push(item)
-                    });
+                    if(data.collection && data.collection.length> 0){
+                        data.collection.forEach((item) => {
+                            collection.push(item)
+                        });
 
-                    
-                    // Config the ui table
-                    $("#collection_name").html($("input[name=Collection-name]").val()+"s").css({display:'block'})
-                    data_table = tableConfig(collection_name, collection, data.schema)
-
+                        
+                        // Config the ui table
+                        $("#collection_name").html($("input[name=Collection-name]").val()+"s").css({display:'block'})
+                        collection_schema = data.schema
+                        data_table = tableConfig(collection_name, collection)
+                    }else{
+                        alert("Empty data responce")
+                        
+                    }
                     
                 }
             },
@@ -213,7 +218,7 @@ let api_manager = {
                         collection[Selected_item_index] = updatedItem
                         
                         let i = 0;
-                        Object.keys(collection[Selected_item_index]).forEach(function(key) {
+                        collection_schema.forEach(function(key) {
                             $("#dtBasicExample tbody").find("tr").eq(Selected_item_index)
                                 .find("td").eq(i).text(collection[Selected_item_index][key])
                             i = i+1    
@@ -265,7 +270,7 @@ let api_manager = {
 }
 
 // Database config
-tableConfig = (collection_name, collection, schema) =>{
+tableConfig = (collection_name, collection) =>{
 
     //let col = collection
     
@@ -273,7 +278,7 @@ tableConfig = (collection_name, collection, schema) =>{
     // Clearing and building the table head
     $('#dtBasicExample').find("thead tr").html("")
     
-    schema.forEach((key) =>{
+    collection_schema.forEach((key) =>{
         $('#dtBasicExample').find("thead tr").append(
             $("<th>").addClass("th-sm").text(key)
         )
@@ -290,7 +295,7 @@ tableConfig = (collection_name, collection, schema) =>{
                         "data-target":"#exampleModalCenter"
                     })
         )
-        schema.forEach((key) =>{
+        collection_schema.forEach((key) =>{
             $('#dtBasicExample').find("tbody tr").last().append(
                 $("<td>").addClass("th-sm").text(item[key])
             )

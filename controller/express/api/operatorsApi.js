@@ -23,14 +23,17 @@ router.get("/", restriction_0_1A, (req, res, next) => {
                 data.push({
                     _id: user._id,
                     username: operator.username,
-                    email: operator.email
+                    email: operator.email,
+                    c_manager: operator.c_manager
+                    // TODO => populate entities
                 })
             });
 
             let operator_schema = [
                 "_id",
                 "username", 
-                "email"
+                "email",
+                "c_manager"
             ]
 
             res.json({collection: data, schema: operator_schema})

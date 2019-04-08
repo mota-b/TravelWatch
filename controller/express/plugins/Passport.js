@@ -87,11 +87,59 @@ module.exports = function(app){
                     
                     let result = {
                         ui_data: {
-                            username: user.username,
-                            email : user.email,
-                            _id: user._id,
+                            username: c_manager.username,
+                            email : c_manager.email,
+                            _id: c_manager._id,
                         },
                         token : CompanyManager.generateJWT(c_manager._id)
+                    }
+                    done(false, result, null )
+                }else{
+                    done(err, null, {message:"Incorret username or password"})
+                }
+            })
+        } 
+    ))
+
+    // Inegrating the 'local' (mate) logIn Strategy ==> call it with : passport.authenticate('mate')
+    passport.use('mate', new LocalStrategy( 
+        {
+            username: "username",
+            password: "password"
+        },
+        (username, password, done) => {
+
+            Mate = require("../../../model/MateModel")
+            //console.log("This is The 'local' local strategy");
+            
+            // Verify if the user logIn with username or email
+            let filter = {
+                username: null,
+                email: null
+            }
+            let emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
+            if(username.match(emailRegex)){
+                // This is an email
+                filter.email = username    
+            }else{
+                // This is an username
+                filter.username = username
+            }
+            
+            // Find a matching user to logIn            
+            Mate.findOne({ $or: [{ email: filter.email}, { username: filter.username}]},  (err, mate) => {     
+                // Verify if the user is found && the password
+                console.log(mate);
+                
+                if(mate && mate.verifyPassword(password, mate.password)){
+                    
+                    let result = {
+                        ui_data: {
+                            username: mate.username,
+                            email : mate.email,
+                            _id: mate._id,
+                        },
+                        token : Mate.generateJWT(c_manager._id)
                     }
                     done(false, result, null )
                 }else{
@@ -121,7 +169,7 @@ module.exports = function(app){
     ))
 
     // Inegrating the 'jwt' (company) API-TOKEN Strategy ==> call it with : passport.authenticate('company-jwt')
-    passport.use('company-jwt',new JwtStrategy( 
+    passport.use('c_manager-jwt',new JwtStrategy( 
         {
             jwtFromRequest: ExtractJwt.fromHeader("token"),
             secretOrKey: process.env.COMPANY_MANAGER_TOKEN_SECRET

@@ -26,13 +26,13 @@ forms_config = () => {
     $("#register_asCompany").submit(function(event){
         event.preventDefault();
         $.ajax( {
-            url:'/api/login/reg',
+            url:'/api/login/reg/company',
             type:"POST",
             data:{
                 "company_name": $(this).find("input[name=company_name]").val(),
                 "username": $(this).find("input[name=username]").val(),
                 "email": $(this).find("input[name=email]").val(),
-                "password": $(this).find("input[name=password]").val()
+                "password": $(this).find("input[name=password]").val(),
             },
             
             success: function(data) {    
@@ -50,12 +50,12 @@ forms_config = () => {
     $("#register_asMate").submit(function(event){
         event.preventDefault();
         $.ajax( {
-            url:'/api/login/reg',
+            url:'/api/login/reg/mate',
             type:"POST",
             data:{
                 "username": $(this).find("input[name=username]").val(),
                 "email": $(this).find("input[name=email]").val(),
-                "password": $(this).find("input[name=password]").val()
+                "password": $(this).find("input[name=password]").val(),
             },
             
             success: function(data) {    
@@ -76,10 +76,9 @@ forms_config = () => {
             url:'/api/login/log',
             type:"POST",
             data:{
-                "strat_number": 0, // TODO choose strategie number 
                 "username": $(this).find("input[name=username]").val(),
                 "password": $(this).find("input[name=password]").val(),
-                "remember": $("input[name=remember]")[0].checked,
+                "remember": $("input[name=remember]")[0].checked
             },
             
             success: function(data) { 

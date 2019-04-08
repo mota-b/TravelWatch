@@ -1,7 +1,7 @@
 let router = require('express').Router(),
     
-    CompanyManager = require("../../../model/CompanyManagerModel"),
-    {restriction_0, restriction_1A} = require("./apiRestriction")
+    Mate = require("../../../model/MateModel"),
+    {restriction_0, restriction_1B} = require("./apiRestriction")
 
 
 /**
@@ -16,31 +16,25 @@ router.post("/", restriction_0, (req, res, next) => {
 // Read List
 router.get("/", restriction_0, (req, res, next) => {
     // Return Users list
-    CompanyManager.find({}, (err, c_managers) => {
-        if (c_managers){
+    Mate.find({}, (err, mates) => {
+        if (mates){
             let data = [];
-            c_managers.forEach( (c_manager) => {
+            mates.forEach( (mate) => {
                 data.push({
-                    _id: c_manager._id,
-                    company_name: c_manager.company_name,
-                    username: c_manager.username,
-                    email: c_manager.email,
-                    company_location: c_manager.company_location,
-                    isCompanyUnlocked: c_manager.isCompanyUnlocked
-                    // TODO => populate operators
-                    // TODO => populate entities of interest
+                    _id: user._id,
+                    username: mate.username,
+                    email: mate.email,
+                    image: mate.image
                 })
             });
 
-            let c_manager_schema = [
+            let mate_schema = [
                 "_id",
-                "company_name",
                 "username", 
-                "email",
-                "isCompanyUnlocked"
+                "email"
             ]
 
-            res.json({collection: data, schema: c_manager_schema})
+            res.json({collection: data, schema: mate_schema})
         }
     })
 })
@@ -50,9 +44,9 @@ router.get("/", restriction_0, (req, res, next) => {
 router.get("/:id", restriction_0, (req, res, next) => {
     let id = req.params['id']
     if(req.params && id){
-        CompanyManager.findById(id, (err, c_manager) => {
-            if(c_manager){
-                res.json(c_manager)
+        Mate.findById(id, (err, mate) => {
+            if(user){
+                res.json(mate)
             }
         })
     }else{console.log(req.params, id);
@@ -68,10 +62,10 @@ router.put("/:id", restriction_0, (req, res, next) => {
    
     let update_options = JSON.parse(update)     
 
-    CompanyManager.findOneAndUpdate(
+    Mate.findOneAndUpdate(
         {_id: id},
         {$set:update_options},
-        (err, c_manager) =>{
+        (err, mate) =>{
             if(!err){
                 res.json({isUpdated:true})
             }else{
@@ -89,9 +83,9 @@ router.delete("/:id", restriction_0, (req, res, next) => {
 
     let  {id} = req.params
 
-    CompanyManager.findOneAndDelete(
+    Mate.findOneAndDelete(
         {_id: id},
-        (err, c_manager) =>{
+        (err, mate) =>{
             if(!err){
                 res.json({isDeleted:true})
             }else{
@@ -108,12 +102,12 @@ router.delete("/:id", restriction_0, (req, res, next) => {
  */
 
 // Get Self
-router.get("/self:id", restriction_1A, (req, res, next) => {
+router.get("/self:id", restriction_1B, (req, res, next) => {
     let id = req.params['id']
     if(req.params && id){
-        CompanyManager.findById(id, (err, c_manager) => {
-            if(c_manager){
-                res.json(c_manager)
+        Mate.findById(id, (err, mate) => {
+            if(user){
+                res.json(mate)
             }
         })
     }else{console.log(req.params, id);
@@ -122,16 +116,16 @@ router.get("/self:id", restriction_1A, (req, res, next) => {
 })
 
 // Update Self
-router.put("/self/:id", restriction_1A, (req, res, next) => {
+router.put("/self/:id", restriction_1B, (req, res, next) => {
     let {update} = req.body,
         {id} = req.params
    
     let update_options = JSON.parse(update)     
 
-    CompanyManager.findOneAndUpdate(
+    Mate.findOneAndUpdate(
         {_id: id},
         {$set:update_options},
-        (err, c_manager) =>{
+        (err, mate) =>{
             if(!err){
                 res.json({isUpdated:true})
             }else{
