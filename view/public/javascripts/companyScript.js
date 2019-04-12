@@ -4,50 +4,18 @@
 
 // Main
 $(document).ready(function () {
-    if (!sessionStorage.getItem("admin")){
-        // admin login interface
-        admin_log()
-    }else{
-        // admin dashBoard interface
-        admin_dashBoard()
-    }   
+    
+    // c_manager dashBoard interface
+    c_manager_dashBoard()
+       
      
 });
 
 
-// admin Log script
-function admin_log (){
 
-    // submit admin login
-    $("form").submit(function(event){
-        
-        event.preventDefault();
-        $.ajax( {
-            url:'/api/login/log/admin',
-            type:"POST",
-            data:{
-                "username": $(this).find("input[name=username]").val(),
-                "password": $(this).find("input[name=password]").val()
-            },
-            
-            success: function(data) { 
-                
-                if (data.error){ 
-                    alert(data.error.message)
-                }
-                else{
-                    sessionStorage.setItem("admin", JSON.stringify(data))
-                    window.location.href = "/admin";
-                }
-            },
-            
-        });
-        return false;
-    });
-}
 
 // admin DashBoard script
-function admin_dashBoard (){
+function c_manager_dashBoard (){
 
     // switch log to dashboard display
     $("#log").css({
@@ -137,7 +105,7 @@ let api_manager = {
             url:'/api/'+collection_name,
             type:"GET",     
             headers: {
-                token: admin.token
+                token: user.token
             },   
             success: function(data) { 
                 
@@ -199,7 +167,7 @@ let api_manager = {
             url:'/api/'+collection_name+'/'+item_id,
             type:"PUT",
             headers: {
-                token: admin.token
+                token: user.token
             },
             data:{
                 "update": JSON.stringify(item)
@@ -239,7 +207,7 @@ let api_manager = {
             url:'/api/'+collection_name+'/'+item_id,
             type:"DELETE",
             headers: {
-                token: admin.token
+                token: user.token
             },
             
             success: function(data) { 

@@ -1,0 +1,40 @@
+
+/* Global */
+body {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #6ad0ff
+}
+.section{
+  padding-top: 60px;
+  height: 100vh;
+}
+
+
+
+
+
+/* company_manager_dashboard */
+#dashboard{
+  display: none;
+}
+#get_collection_form{
+  
+}
+.form-control{
+  margin: 6px;
+}
+
+#db-table{
+  background-color: #6ad0ff;
+}
+
+#dtBasicExample_wrapper{
+  width: 100%;
+  /* background-color: snow; */
+}
+#db-table #dtBasicExample{
+  background-color: snow;
+}

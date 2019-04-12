@@ -101,6 +101,52 @@ module.exports = function(app){
         } 
     ))
 
+    // Inegrating the 'local' (operator) logIn Strategy ==> call it with : passport.authenticate('operator')
+    passport.use('operator', new LocalStrategy( 
+        {
+            username: "username",
+            password: "password"
+        },
+        (username, password, done) => {
+
+            Operator = require("../../../model/Operator")
+            //console.log("This is The 'local' local strategy");
+            
+            // Verify if the user logIn with username or email
+            let filter = {
+                username: null,
+                email: null
+            }
+            let emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
+            if(username.match(emailRegex)){
+                // This is an email
+                filter.email = username    
+            }else{
+                // This is an username
+                filter.username = username
+            }
+            
+            // Find a matching user to logIn            
+            Operator.findOne({ $or: [{ email: filter.email}, { username: filter.username}]},  (err, operator) => {     
+                // Verify if the user is found && the password
+                if(operator && operator.verifyPassword(password, operator.password)){
+                    
+                    let result = {
+                        ui_data: {
+                            username: operator.username,
+                            email : operator.email,
+                            _id: operator._id,
+                        },
+                        token : Operator.generateJWT(operator._id)
+                    }
+                    done(false, result, null )
+                }else{
+                    done(err, null, {message:"Incorret username or password"})
+                }
+            })
+        } 
+    ))
+
     // Inegrating the 'local' (mate) logIn Strategy ==> call it with : passport.authenticate('mate')
     passport.use('mate', new LocalStrategy( 
         {
@@ -139,7 +185,7 @@ module.exports = function(app){
                             email : mate.email,
                             _id: mate._id,
                         },
-                        token : Mate.generateJWT(c_manager._id)
+                        token : Mate.generateJWT(mate._id)
                     }
                     done(false, result, null )
                 }else{
@@ -156,7 +202,7 @@ module.exports = function(app){
             secretOrKey: process.env.ADMIN_TOKEN_SECRET
         },
         (decode, done) => {
-            console.log("This is The JWT strategy");
+            console.log("This is The JWT strategy of admin");
             if(decode){
                 // True token
                 done(false, decode, null);
@@ -175,10 +221,10 @@ module.exports = function(app){
             secretOrKey: process.env.COMPANY_MANAGER_TOKEN_SECRET
         },
         (decode, done) => {
-            console.log("This is The JWT strategy");
+            console.log("This is The JWT strategy of Company Manager");
             if(decode){
                 // True token
-                done(false, decode);
+                done(false, decode, null);
             }else{
                 // True token
                 done(false, null, {message: "token invalid or expired"});
@@ -193,10 +239,10 @@ module.exports = function(app){
             secretOrKey: process.env.MATE_TOKEN_SECRET
         },
         (decode, done) => {
-            console.log("This is The JWT strategy");
+            console.log("This is The JWT strategy of mate");
             if(decode){
                 // True token
-                done(false, decode);
+                done(false, decode, null);
             }else{
                 // True token
                 done(false, null, {message: "token invalid or expired"});
@@ -211,10 +257,10 @@ module.exports = function(app){
             secretOrKey: process.env.OPERATOR_TOKEN_SECRET
         },
         (decode, done) => {
-            console.log("This is The JWT strategy");
+            console.log("This is The JWT strategy of operator");
             if(decode){
                 // True token
-                done(false, decode);
+                done(false, decode, null);
             }else{
                 // True token
                 done(false, null, {message: "token invalid or expired"});

@@ -4,11 +4,9 @@ let passport = require("passport")
 
 // Admin Restriction level
 let restriction_0 = (req, res, next) => {  
-    console.log(req.query);
     
     passport.authenticate( 'admin-jwt', (err, data, info) => {
         // This is the result authentication callback
-        //console.log(data);
         
         //Verify if The authentification has succeded
         if(data){
@@ -114,14 +112,14 @@ restriction_1B = (req, res, next) => {
 
 // Admin & CompanyManager Restriction level
 restriction_0_1A = (req, res, next) => {  
-    console.log(req.query);
+    
     
     // let {strat_number} = req.query,
     //     strategies = ['admin-jwt', 'api-jwt']
     // if (strategies[strat_number]) {
         passport.authenticate( "c_manager-jwt", (err, data, info) => {
             // This is the result authentication callback
-            //console.log(data);
+           
             
             //Verify if The authentification has succeded
             if(data){
@@ -130,12 +128,12 @@ restriction_0_1A = (req, res, next) => {
                 //res.json(data)
             }else{
                 // invalid token 
-                console.log(data);
+            
                 
                 // try uper restriction lvl
                 restriction_0(req, res, next)   
                 
-                // res.json({error : {message: info.message}})
+                 //res.json({error : {message: info.message}})
             }
         })(req, res, next)    
     // }else{

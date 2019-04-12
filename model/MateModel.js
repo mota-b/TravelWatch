@@ -43,7 +43,7 @@ MateSchema.statics.generateJWT = (data, options) => {
             {
                 _id: data
             },
-            process.env.JWT_SECRET,
+            process.env.MATE_TOKEN_SECRET,
             options
         );
     }else{
@@ -51,7 +51,7 @@ MateSchema.statics.generateJWT = (data, options) => {
             {
                 _id: data
             },
-            process.env.JWT_SECRET,
+            process.env.MATE_TOKEN_SECRET,
             { expiresIn: "1d" }
         );
     }
@@ -61,7 +61,7 @@ MateSchema.statics.generateJWT = (data, options) => {
 
 // Verify the token
 MateSchema.statics.verifyJWT = (token) => {
-    return jwt.verify(token, process.env.JWT_SECRET,{})   
+    return jwt.verify(token, process.env.MATE_TOKEN_SECRET,{})   
 }
 
 // The model

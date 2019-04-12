@@ -70,7 +70,7 @@ module.exports = {
                 
             break;
             
-            case 'user':
+            case 'company':
                 links.push("/css/"+page+"Style.css")
                 scripts.push("/js/"+page+"Script.js")
             break;

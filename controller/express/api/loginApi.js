@@ -5,7 +5,9 @@ let router = require('express').Router(),
         service: "gmail",
         auth: { user: "kaizen.org.dz@gmail.com", pass: "kaizen.org24" }
     }),
-    CompanyManager = require("../../../model/CompanyManagerModel");
+    CompanyManager = require("../../../model/CompanyManagerModel"),
+    Mate = require("../../../model/MateModel");
+    
 
 
 /* Authentication calls methodes */
@@ -32,12 +34,14 @@ let authenticate_mate = (req, res, next) => {
             // This is the result authentication callback
             
             
+            
             //Verify if The authentification has succeded
             if(data){
+                console.log("i am c_manager");
                 data.remember = remember
                 res.json(data)
             }else{
-
+                console.log("i am mate");
 
                 authenticate_mate(req, res, next)
             }

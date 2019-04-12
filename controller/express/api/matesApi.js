@@ -10,7 +10,7 @@ let router = require('express').Router(),
 
 // Create
 router.post("/", restriction_0, (req, res, next) => {
-    res.json("not activated yet")
+    res.json({error : {message: "not activated yet"}})
 })
 
 // Read List
@@ -102,7 +102,8 @@ router.delete("/:id", restriction_0, (req, res, next) => {
  */
 
 // Get Self
-router.get("/self:id", restriction_1B, (req, res, next) => {
+router.get("/self/:id", restriction_1B, (req, res, next) => {
+    
     let id = req.params['id']
     if(req.params && id){
         Mate.findById(id, (err, mate) => {

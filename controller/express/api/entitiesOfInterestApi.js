@@ -10,7 +10,7 @@ let router = require('express').Router(),
 
 // Create
 router.post("/", restriction_0_1A, (req, res, next) => {
-    res.json("not activated yet")
+    res.json({error : {message: "not activated yet"}})
 })
 
 // Read List

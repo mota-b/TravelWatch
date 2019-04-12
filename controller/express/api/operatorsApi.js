@@ -10,12 +10,13 @@ let router = require('express').Router(),
 
 // Create
 router.post("/", restriction_0_1A, (req, res, next) => {
-    res.json("not activated yet")
+    res.json({error : {message: "not activated yet"}})
 })
 
 // Read List
 router.get("/", restriction_0_1A, (req, res, next) => {
     // Return Users list
+    
     Operator.find({}, (err, operators) => {
         if (operators){
             let data = [];
@@ -104,7 +105,7 @@ router.delete("/:id", restriction_0_1A, (req, res, next) => {
  */
 
 // Get Self
-router.get("/self:id", restriction_2A, (req, res, next) => {
+router.get("/self/:id", restriction_2A, (req, res, next) => {
     let id = req.params['id']
     if(req.params && id){
         Operator.findById(id, (err, operator) => {
