@@ -38,3 +38,8 @@ body {
 #db-table #dtBasicExample{
   background-color: snow;
 }
+#add{
+  border-radius: 200%;
+  display: none;
+  color: snow
+}

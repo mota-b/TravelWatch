@@ -71,7 +71,12 @@ module.exports = {
             break;
             
             case 'company':
+                links.push("https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css") 
+                links.push("/bower/jsoneditor/dist/jsoneditor.min.css")   
                 links.push("/css/"+page+"Style.css")
+                
+                scripts.push("https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js")
+                scripts.push("/bower/jsoneditor/dist/jsoneditor.min.js")
                 scripts.push("/js/"+page+"Script.js")
             break;
     

@@ -60,22 +60,33 @@ function admin_dashBoard (){
 
     // Database config  
     collection = [] ;
+    data_table = null
     $("#get_collection_form").submit(function(event){
         event.preventDefault()
 
-        collection = [] ;
+        collection = []
+        collection_schema = []
         api_manager.getCollection($("input[name=Collection-name]").val(), collection)
+
+        
 
     })
     
    
     // JSON item Selection
-    $(document).on("click", '#dtBasicExample tbody tr', (event) => {
+    $(document).on("click", '#dtBasicExample tbody .trow', (event) => {
+        console.log("chnahou nta");
         console.log($(event.target));
-        console.log($(this));
+        console.log("chnahou bouk");
+        console.log($(event.target).parent().index());
+        // console.log($(event.target).parent(".trow")[0]);
+        // console.log($(event.target).parent(".trow")[0]._DT_CellIndex);
+        // console.log($(event.target)["0"]);
+        // console.log($(event.target)["0"]._DT_CellIndex);
         
         Selected_item_index = $(event.target)["0"]._DT_CellIndex.row;
-        
+        console.log(Selected_item_index);
+
         // create the editor
         $("#jsoneditor").html("")
         var container = document.getElementById("jsoneditor");
@@ -87,6 +98,8 @@ function admin_dashBoard (){
 
         // get json
         Selected_item = editor.get();
+
+
 
     })
 
@@ -111,7 +124,11 @@ function admin_dashBoard (){
         
         if(!json_isEmpty){
             api_manager.updateItem($("#collection_name").html(), Selected_item._id, toUpdate)
-        }        
+        }  
+        
+        
+        // re draw the table (not a reload just re draw) 
+        data_table.draw()
     })
 
     // Json item Delete
@@ -122,6 +139,9 @@ function admin_dashBoard (){
         // get json
         api_manager.deleteItem($("#collection_name").html(), Selected_item._id)
         
+
+        // re draw the table (not a reload just re draw) 
+        data_table.draw()
     })
 }
 
@@ -147,22 +167,36 @@ let api_manager = {
                 }
                 else{
 
+                    // Clear previeuw collection
                     //collection = []
+                    //collection_schema = []
+
                     if(data.collection && data.collection.length> 0){
+                        
+                        // Set the collection
                         data.collection.forEach((item) => {
                             collection.push(item)
                         });
-
-                        
-                        // Config the ui table
-                        $("#collection_name").html($("input[name=Collection-name]").val()).css({display:'block'})
-                        collection_schema = data.schema
-                        data_table = tableConfig(collection_name, collection)
                     }else{
                         alert("Empty data responce")
-                        
                     }
+
+                    // Config the ui table
+                    $("#collection_name").html($("input[name=Collection-name]").val()).css({display:'block'})
+                    $("#add").css({display:'inline-block'})
                     
+                    
+                    
+
+                    if (data_table!=null) {
+                        // redraw here to prevent infinit table without pages
+                        data_table.draw()
+                    }
+
+                    // Set the jQuery table
+                    collection_schema = data.schema
+                    data_table = tableConfig(collection_name, collection)
+
                 }
             },
             

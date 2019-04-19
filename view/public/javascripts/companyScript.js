@@ -36,19 +36,23 @@ function c_manager_dashBoard (){
 
     })
     
-   
+    // JSON editor config
+    $("#jsoneditor").html("")
+    container = document.getElementById("jsoneditor");
+    container_options = {};
+    editor = new JSONEditor(container, container_options);
+
+
     // JSON item Selection
     $(document).on("click", '#dtBasicExample tbody tr', (event) => {
-        console.log($(event.target));
-        console.log($(this));
+        // console.log($(event.target));
+        // console.log($(this));
         
         Selected_item_index = $(event.target)["0"]._DT_CellIndex.row;
         
         // create the editor
         $("#jsoneditor").html("")
-        var container = document.getElementById("jsoneditor");
-        var options = {};
-        editor = new JSONEditor(container, options);
+        // editor = new JSONEditor(container, container_options);
 
         // set json
         editor.set(collection[Selected_item_index]);
@@ -56,6 +60,47 @@ function c_manager_dashBoard (){
         // get json
         Selected_item = editor.get();
 
+    })
+
+    // JSON item add
+    $(document).on("click", '#add', (event) => {
+        event.preventDefault();
+        console.log("new item");
+        
+        var container = document.getElementById("jsoneditor");
+        var options = {};
+        var editor = new JSONEditor(container, options);
+
+        // set json
+        var json = {
+            "Array": [1, 2, 3],
+            "Boolean": true,
+            "Null": null,
+            "Number": 123,
+            "Object": {"a": "b", "c": "d"},
+            "String": "Hello World"
+        };
+        editor.set(json);
+
+        // get json
+        var json = editor.get();
+       
+        // create the editor
+        //$("#jsoneditor").html("")
+        // var container = document.getElementById("jsoneditor");
+        // var options = {};
+        // let editor = new JSONEditor(container, options);
+
+        // // set json
+        // editor.set({
+        //     username:"",
+        //     password:""
+        // });
+
+        // get json
+        Selected_item = editor.get();
+
+       
     })
 
     // JSON item update
@@ -122,14 +167,17 @@ let api_manager = {
                         });
 
                         
-                        // Config the ui table
-                        $("#collection_name").html($("input[name=Collection-name]").val()).css({display:'block'})
-                        collection_schema = data.schema
-                        data_table = tableConfig(collection_name, collection)
+                        
                     }else{
                         alert("Empty data responce")
                         
                     }
+
+                    // Config the ui table
+                    $("#collection_name").html($("input[name=Collection-name]").val()).css({display:'block'})
+                    $("#add").css({display:'inline-block'})
+                    collection_schema = data.schema
+                    data_table = tableConfig(collection_name, collection)
                     
                 }
             },

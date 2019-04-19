@@ -26,6 +26,7 @@ module.exports = function (app) {
         entitiesOfInterestApi = require('../api/entitiesOfInterestApi'),
         matesApi = require('../api/matesApi'),
         adminsApi = require('../api/adminsApi');
+        
 
     app.use('/api/login', loginApi);
     app.use('/api/company_managers', company_managersApi);
@@ -33,6 +34,7 @@ module.exports = function (app) {
     app.use('/api/entities', entitiesOfInterestApi);
     app.use('/api/mates', matesApi);
     app.use('/api/admins', adminsApi);
+    
     app.use('/api/', (req, res, next) =>{
         res.json({error : {message: "This api doesn't exist"}})
     });
