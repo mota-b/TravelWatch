@@ -49,8 +49,11 @@ body {
 #db-table #dtBasicExample{
   background-color: snow;
 }
+#dtBasicExample tbody tr{
+  cursor: pointer;
+}
 #add{
   border-radius: 200%;
   display: none;
-  color: snow
+  color: snow;
 }

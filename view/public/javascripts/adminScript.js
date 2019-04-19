@@ -69,24 +69,24 @@ function admin_dashBoard (){
         api_manager.getCollection($("input[name=Collection-name]").val(), collection)
 
         
+        if (data_table!=null) {
+            // redraw here to prevent infinit table without pages
+            setTimeout(() =>{
+                data_table.draw()
+            }, 500) 
+        }
 
     })
     
    
     // JSON item Selection
-    $(document).on("click", '#dtBasicExample tbody .trow', (event) => {
-        console.log("chnahou nta");
-        console.log($(event.target));
-        console.log("chnahou bouk");
-        console.log($(event.target).parent().index());
-        // console.log($(event.target).parent(".trow")[0]);
-        // console.log($(event.target).parent(".trow")[0]._DT_CellIndex);
-        // console.log($(event.target)["0"]);
-        // console.log($(event.target)["0"]._DT_CellIndex);
+    $(document).on("click", '#dtBasicExample tbody tr', (event) => {
+        
         
         Selected_item_index = $(event.target)["0"]._DT_CellIndex.row;
+        console.log("index");
         console.log(Selected_item_index);
-
+        
         // create the editor
         $("#jsoneditor").html("")
         var container = document.getElementById("jsoneditor");
@@ -99,6 +99,8 @@ function admin_dashBoard (){
         // get json
         Selected_item = editor.get();
 
+        //display the modal
+        $("#exampleModalCenter").modal("toggle")
 
 
     })
@@ -167,10 +169,6 @@ let api_manager = {
                 }
                 else{
 
-                    // Clear previeuw collection
-                    //collection = []
-                    //collection_schema = []
-
                     if(data.collection && data.collection.length> 0){
                         
                         // Set the collection
@@ -185,18 +183,19 @@ let api_manager = {
                     $("#collection_name").html($("input[name=Collection-name]").val()).css({display:'block'})
                     $("#add").css({display:'inline-block'})
                     
-                    
-                    
-
                     if (data_table!=null) {
-                        // redraw here to prevent infinit table without pages
-                        data_table.draw()
+                        // redraw here to clear the table from previeu collection
+                        //data_table.draw()
+                        data_table.data().clear()
                     }
+                    
 
                     // Set the jQuery table
                     collection_schema = data.schema
                     data_table = tableConfig(collection_name, collection)
 
+
+                    
                 }
             },
             
@@ -252,12 +251,13 @@ let api_manager = {
                         collection[Selected_item_index] = updatedItem
                         
                         let i = 0;
+                        let new_row = []
                         collection_schema.forEach(function(key) {
-                            $("#dtBasicExample tbody").find("tr").eq(Selected_item_index)
-                                .find("td").eq(i).text(collection[Selected_item_index][key])
-                            i = i+1    
+                            new_row.push(collection[Selected_item_index][key])
                         });
+                        data_table.row(10).data(new_row).draw()
                         
+
                     }
                 }
             },
@@ -319,27 +319,23 @@ tableConfig = (collection_name, collection) =>{
     })
 
     // Clearing and building the table body
-    $('#dtBasicExample').find("tbody").html("")
-    collection.forEach(function (item) {
-        //console.log(item);
-        $('#dtBasicExample').find("tbody").append(
-            $("<tr>").addClass("waves-effect waves-light trow")
-                    .attr( {
-                        "data-toggle":"modal",
-                        "data-target":"#exampleModalCenter"
-                    })
-        )
-        collection_schema.forEach((key) =>{
-            $('#dtBasicExample').find("tbody tr").last().append(
-                $("<td>").addClass("th-sm").text(item[key])
-            )
-        })
-    })
+    $('#dtBasicExample').find("tbody").html("")    
     
-    
-
     let table = $('#dtBasicExample').DataTable();
+
+
+    collection.forEach(function (item) {
+        let row = []
+
+        collection_schema.forEach((key) =>{
+            row.push(item[key]) 
+        })
+        
+        table.row.add( row ).draw( false );
+    })
+
     $('.dataTables_length').addClass('bs-select');    
+    
     
     
     return table;
