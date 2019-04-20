@@ -37,7 +37,7 @@ OperatorSchema.statics.generateJWT = (data, options) => {
             {
                 _id: data
             },
-            process.env.JWT_SECRET,
+            process.env.OPERATOR_TOKEN_SECRET,
             options
         );
     }else{
@@ -45,7 +45,7 @@ OperatorSchema.statics.generateJWT = (data, options) => {
             {
                 _id: data
             },
-            process.env.JWT_SECRET,
+            process.env.OPERATOR_TOKEN_SECRET,
             { expiresIn: "1d" }
         );
     }
@@ -55,7 +55,7 @@ OperatorSchema.statics.generateJWT = (data, options) => {
 
 // Verify the token
 OperatorSchema.statics.verifyJWT = (token) => {
-    return jwt.verify(token, process.env.JWT_SECRET,{})   
+    return jwt.verify(token, process.env.OPERATOR_TOKEN_SECRET,{})   
 }
 
 // The model

@@ -46,14 +46,17 @@ body {
   width: 100%;
   /* background-color: snow; */
 }
-#db-table #dtBasicExample{
+#db-table #table{
   background-color: snow;
 }
-#dtBasicExample tbody tr{
+#table tbody tr{
   cursor: pointer;
 }
 #add{
   border-radius: 200%;
   display: none;
   color: snow;
+}
+#validate{
+  display: none;
 }

@@ -10,12 +10,36 @@ let router = require('express').Router(),
 
 // Create
 router.post("/", restriction_0, (req, res, next) => {
-    res.json({error : {message: "not activated yet"}})
+
+    // Get the json Item
+    let newItem = JSON.parse(req.body.newItem); 
+    
+    // Create the new Item
+    let newC_manager = new Operator({
+        company_name: newItem.company_name,
+        username: newItem.username,
+        email: newItem.email,
+        password: CompanyManager.generatePassword(newItem.password),
+        company_location: {
+            lat: newItem.company_location.lat,
+            lon: newItem.company_location.lon
+        },
+        isCompanyUnlocked: newItem.isCompanyUnlocked,
+        
+        operators: [],
+        entities: [] 
+    })
+
+    // Save the document
+    newC_manager.save();
+
+    res.json({isCreated : true})
 })
 
 // Read List
 router.get("/", restriction_0, (req, res, next) => {
-    // Return Users list
+    
+    // Return Collection list
     CompanyManager.find({}, (err, c_managers) => {
         if (c_managers){
             let data = [];
@@ -32,15 +56,31 @@ router.get("/", restriction_0, (req, res, next) => {
                 })
             });
 
+            // Table display Schema
             let c_manager_schema = [
                 "_id",
                 "company_name",
                 "username", 
                 "email",
                 "isCompanyUnlocked"
-            ]
+            ],
+            // New Item Create Schema
+            new_item_schema = { 
+                company_name: "",
+                username: "",
+                email: "",
+                password: "",
+                company_location: {
+                    lat: "",
+                    lon: ""
+                },
+                isCompanyUnlocked: false
+                // TODO => populate operators
+                // TODO => populate entities of interest
+            }
 
-            res.json({collection: data, schema: c_manager_schema})
+            // Return result
+            res.json({collection: data, schema: c_manager_schema, new_item_schema: new_item_schema})
         }
     })
 })

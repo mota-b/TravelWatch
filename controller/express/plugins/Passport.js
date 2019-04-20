@@ -81,7 +81,7 @@ module.exports = function(app){
             // Find a matching user to logIn            
             CompanyManager.findOne({ $or: [{ email: filter.email}, { username: filter.username}]},  (err, c_manager) => {     
                 // Verify if the user is found && the password
-                console.log(c_manager);
+                // console.log(c_manager);
                 
                 if(c_manager && c_manager.verifyPassword(password, c_manager.password)){
                     
@@ -95,7 +95,10 @@ module.exports = function(app){
                     }
                     done(false, result, null )
                 }else{
+                    
+                    
                     done(err, null, {message:"Incorret username or password"})
+                    
                 }
             })
         } 
@@ -109,26 +112,12 @@ module.exports = function(app){
         },
         (username, password, done) => {
 
-            Operator = require("../../../model/Operator")
-            //console.log("This is The 'local' local strategy");
-            
-            // Verify if the user logIn with username or email
-            let filter = {
-                username: null,
-                email: null
-            }
-            let emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
-            if(username.match(emailRegex)){
-                // This is an email
-                filter.email = username    
-            }else{
-                // This is an username
-                filter.username = username
-            }
+            Operator = require("../../../model/OperatorModel")
             
             // Find a matching user to logIn            
-            Operator.findOne({ $or: [{ email: filter.email}, { username: filter.username}]},  (err, operator) => {     
+            Operator.findOne({ username: username},  (err, operator) => {     
                 // Verify if the user is found && the password
+                
                 if(operator && operator.verifyPassword(password, operator.password)){
                     
                     let result = {
@@ -141,6 +130,7 @@ module.exports = function(app){
                     }
                     done(false, result, null )
                 }else{
+                    
                     done(err, null, {message:"Incorret username or password"})
                 }
             })
@@ -175,7 +165,7 @@ module.exports = function(app){
             // Find a matching user to logIn            
             Mate.findOne({ $or: [{ email: filter.email}, { username: filter.username}]},  (err, mate) => {     
                 // Verify if the user is found && the password
-                console.log(mate);
+                //console.log(mate);
                 
                 if(mate && mate.verifyPassword(password, mate.password)){
                     
@@ -189,6 +179,7 @@ module.exports = function(app){
                     }
                     done(false, result, null )
                 }else{
+                    
                     done(err, null, {message:"Incorret username or password"})
                 }
             })

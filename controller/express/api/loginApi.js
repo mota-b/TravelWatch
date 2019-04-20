@@ -13,6 +13,7 @@ let router = require('express').Router(),
 /* Authentication calls methodes */
 let authenticate_mate = (req, res, next) => {
     let {strategie, remember} = req.body
+    
         passport.authenticate( "mate", (err, data, info) => {
             // This is the result authentication callback
             
@@ -30,6 +31,7 @@ let authenticate_mate = (req, res, next) => {
     },
     authenticate_company = (req, res, next) => {
         let {strategie, remember} = req.body
+        
         passport.authenticate( "c_manager", (err, data, info) => {
             // This is the result authentication callback
             
@@ -41,8 +43,27 @@ let authenticate_mate = (req, res, next) => {
                 data.remember = remember
                 res.json(data)
             }else{
-                console.log("i am mate");
-
+                console.log("Try operator");
+                authenticate_operator(req, res, next)
+            }
+        })(req, res, next)    
+    },
+    authenticate_operator = (req, res, next) => {
+        let {strategie, remember} = req.body
+        
+        
+        passport.authenticate( "operator", (err, data, info) => {
+            // This is the result authentication callback
+            
+            
+            
+            //Verify if The authentification has succeded
+            if(data){
+                console.log("i am operator");
+                data.remember = remember
+                res.json(data)
+            }else{
+                console.log("Try mate");
                 authenticate_mate(req, res, next)
             }
         })(req, res, next)    

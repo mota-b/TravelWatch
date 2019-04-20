@@ -15,13 +15,13 @@ router.post("/", restriction_0, (req, res, next) => {
 
 // Read List
 router.get("/", restriction_0, (req, res, next) => {
-    // Return Users list
+    // Return mates list
     Mate.find({}, (err, mates) => {
         if (mates){
             let data = [];
             mates.forEach( (mate) => {
                 data.push({
-                    _id: user._id,
+                    _id: mate._id,
                     username: mate.username,
                     email: mate.email,
                     image: mate.image
@@ -32,9 +32,15 @@ router.get("/", restriction_0, (req, res, next) => {
                 "_id",
                 "username", 
                 "email"
-            ]
+            ],
+            new_item_schema = {
+        
+                username: "",
+                email: "",
+                image: ""
+            }
 
-            res.json({collection: data, schema: mate_schema})
+            res.json({collection: data, schema: mate_schema, new_item_schema: new_item_schema})
         }
     })
 })
@@ -45,7 +51,7 @@ router.get("/:id", restriction_0, (req, res, next) => {
     let id = req.params['id']
     if(req.params && id){
         Mate.findById(id, (err, mate) => {
-            if(user){
+            if(mate){
                 res.json(mate)
             }
         })
@@ -107,7 +113,7 @@ router.get("/self/:id", restriction_1B, (req, res, next) => {
     let id = req.params['id']
     if(req.params && id){
         Mate.findById(id, (err, mate) => {
-            if(user){
+            if(mate){
                 res.json(mate)
             }
         })

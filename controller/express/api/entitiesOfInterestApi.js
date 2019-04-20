@@ -15,13 +15,13 @@ router.post("/", restriction_0_1A, (req, res, next) => {
 
 // Read List
 router.get("/", restriction_0_1A_2A, (req, res, next) => {
-    // Return Users list
+    // Return entitys list
     Entity.find({}, (err, entities) => {
         if (entities){
             let data = [];
             entities.forEach( (entity) => {
                 data.push({
-                    _id: user._id,
+                    _id: entity._id,
                     entity_name: entity.entity_name,
                     entity_type: entity.entity_type,
                     
@@ -40,9 +40,18 @@ router.get("/", restriction_0_1A_2A, (req, res, next) => {
                 "c_manager",
                 "operator",
                 "pool_name"
-            ]
+            ],
+            new_item_schema = {
+                entity_name: "",
+                entity_type: "",
+                
+                c_manager: "",
+                operator: "",
+                pool_name: "",
+                // TODO => populate location_history
+            }
 
-            res.json({collection: data, schema: entity_schema})
+            res.json({collection: data, schema: entity_schema, new_item_schema: new_item_schema})
         }
     })
 })
@@ -53,7 +62,7 @@ router.get("/:id", restriction_0_1A_2A, (req, res, next) => {
     let id = req.params['id']
     if(req.params && id){
         Entity.findById(id, (err, entity) => {
-            if(user){
+            if(entity){
                 res.json(entity)
             }
         })
