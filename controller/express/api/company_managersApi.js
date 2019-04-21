@@ -85,7 +85,6 @@ router.get("/", restriction_0, (req, res, next) => {
     })
 })
 
-
 // Read One
 router.get("/:id", restriction_0, (req, res, next) => {
     let id = req.params['id']

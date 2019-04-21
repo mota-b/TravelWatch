@@ -43,7 +43,9 @@ module.exports = function(app){
                         ui_data: {
                             username: admin.username,
                         },
-                        token : Admin.generateJWT(admin._id)
+                        token : Admin.generateJWT(admin._id),
+                        type: "admin"
+                        
                     }
                     done(false, result, null )
                 }else{
@@ -91,7 +93,8 @@ module.exports = function(app){
                             email : c_manager.email,
                             _id: c_manager._id,
                         },
-                        token : CompanyManager.generateJWT(c_manager._id)
+                        token : CompanyManager.generateJWT(c_manager._id),
+                        type: "c_manager"
                     }
                     done(false, result, null )
                 }else{
@@ -126,7 +129,8 @@ module.exports = function(app){
                             email : operator.email,
                             _id: operator._id,
                         },
-                        token : Operator.generateJWT(operator._id)
+                        token : Operator.generateJWT(operator._id),
+                        type: "operator"
                     }
                     done(false, result, null )
                 }else{
@@ -175,7 +179,8 @@ module.exports = function(app){
                             email : mate.email,
                             _id: mate._id,
                         },
-                        token : Mate.generateJWT(mate._id)
+                        token : Mate.generateJWT(mate._id),
+                        type: "mate"
                     }
                     done(false, result, null )
                 }else{

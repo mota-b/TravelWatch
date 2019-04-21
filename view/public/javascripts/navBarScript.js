@@ -40,12 +40,16 @@ function user_nav(){
         console.log(admin.ui_data.username+" is connected");
         $(".navbar-nav").append(
             "   <li class='nav-item dropdown active '>"
-    
-            +"      <a class='nav-link btn-outline-warning waves-effect' href='/admin' id='navbarDropdownMenuLink-4'>"
-            +"          Admin "
+
+            +"      <a class='nav-link btn-outline-warning waves-effect dropdown-toggle' id='dropDown_admin' data-toggle='dropdown' aria-haspopup='true' -->"
+            +"          "+admin.ui_data.username
             +"      </a>"
-        
-            +"  </li>"
+            +"      <div id='admin-menu' class='dropdown-menu dropdown-menu-right dropdown-info' aria-labelledby='dropDown_admin'>"
+            +"          <a class='dropdown-item' href='/admin'>Admin</a>"
+            +"          <a class='dropdown-item' href='/logout/admin'>Log out</a>"
+            +"      </div> "
+            
+            +"  </li>" 
         )
     }
 
@@ -56,16 +60,44 @@ function user_nav(){
         
         $("#log_link").html("")
         
-        $("#log_link").html(
-           
-            "  <a class='nav-link dropdown-toggle' id='navbarDropdownMenuLink-4' data-toggle='dropdown' aria-haspopup='true' -->"
-            +"      <i class='fas fa-user'></i> "+user.ui_data.username
-            +"  </a>"
-            +"  <div id='user-menu' class='dropdown-menu dropdown-menu-right dropdown-info' aria-labelledby='navbarDropdownMenuLink-4'>"
-            +"   <a class='dropdown-item' href='/user'>Profile</a>"
-            +"   <a class='dropdown-item' href='/logout'>Log out</a>"
-            +"  </div> "
+        
+        // apend standard user list-item
+        let user_nav = "   <li class='nav-item dropdown active '>"
+                        +"       <a class='nav-link dropdown-toggle' id='dropDown_user' data-toggle='dropdown' aria-haspopup='true' -->"
+                        +"          <i class='fas fa-user'></i> "+user.ui_data.username
+                        +"      </a>"
+                        +"      <div id='user-menu' class='dropdown-menu dropdown-menu-right dropdown-info ' aria-labelledby='dropDown_user'>"
+         
+        // apend spesific user list-items
+        switch(user.type){
+            case "c_manager":
+                user_nav = user_nav 
+                +"          <a class='dropdown-item' href='/company/manage'>Manage</a>"
+                +"          <a class='dropdown-item' href='/company/profile'>Profile</a>"  
+            break;
+
+            case "operator":
+                user_nav = user_nav
+                +"          <a class='dropdown-item' href='/company/overwatch'>Overwatch</a>"
+            break;
             
+            case "mate":
+                user_nav = user_nav
+                +"          <a class='dropdown-item' href='/mate/index'>Profile</a>"
+            break;
+        }
+        
+
+        // apend standard logout list-item
+        user_nav = user_nav 
+            +"          <a class='dropdown-item' href='/logout'>Log out</a>"
+            +"      </div> "
+
+            +"  </li>" 
+        
+        // display the ui user nav
+        $("#log_link").html(
+                user_nav
         )
 
     }
