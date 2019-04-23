@@ -416,11 +416,14 @@ actionEvent = () => {
     $(document).on("click", '#validate', (event) => {
         event.preventDefault();
 
+        
         // get json
         let new_item = editor.get(),
             passwordRegex = /^[A-Z]+\w{2,}$/;
-        
-        if(!new_item.password.match(passwordRegex)){
+
+            
+        console.log(new_item);
+        if(new_item.password && !new_item.password.match(passwordRegex)){
             // This is an email
             alert("wrong password format"+
             "\n1) the password must start with capital letter"+
