@@ -15,7 +15,7 @@ router.post("/", restriction_0, (req, res, next) => {
     let newItem = JSON.parse(req.body.newItem); 
     
     // Create the new Item
-    let newC_manager = new Operator({
+    let newC_manager = new CompanyManager({
         company_name: newItem.company_name,
         username: newItem.username,
         email: newItem.email,
@@ -31,9 +31,12 @@ router.post("/", restriction_0, (req, res, next) => {
     })
 
     // Save the document
-    newC_manager.save();
+    newC_manager.save().then(() =>{
+        res.json({isCreated : true, _id: newC_manager._id})
+    });
 
-    res.json({isCreated : true})
+    
+    
 })
 
 // Read List
@@ -132,9 +135,22 @@ router.delete("/:id", restriction_0, (req, res, next) => {
         {_id: id},
         (err, c_manager) =>{
             if(!err){
-                res.json({isDeleted:true})
+                let Operator = require("../../../model/OperatorModel"),
+                    Entity = require("../../../model/EntityOfInterestModel");
+                
+                // cascading delete operators and entities
+                c_manager.operators.forEach((operator)=>{
+                    Operator.findOneAndDelete({_id: operator._id}, (err, op) =>{
+                    })
+                })
+                c_manager.entities.forEach((entity)=>{
+                    Entity.findOneAndDelete({_id: entity._id}, (err, ent) => {
+                    })
+                })
+
+                res.json({isDeleted: true})
             }else{
-                res.json({isDeleted:false})
+                res.json({isDeleted: false})
             }
             
         }

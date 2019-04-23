@@ -37,7 +37,13 @@ router.post("/", restriction_0_1A, (req, res, next) => {
         }else{
             res.json({isCreated : false})
         }
+
+
+
     })
+
+
+    
 
 })
 
@@ -126,9 +132,13 @@ router.delete("/:id", restriction_0_1A, (req, res, next) => {
             if(!err){
                 // Remove the operator from the c_manager operators list
                 CompanyManager.findById(operator.c_manager, (err, c_manager) =>{
-                    let indexRemove = c_manager.operators.indexOf(operator._id)
-                    c_manager.operators.splice(indexRemove, 1)
-                    c_manager.save()
+                    
+                    if(!err && c_manager){
+                        let indexRemove = c_manager.operators.indexOf(operator._id)
+                        c_manager.operators.splice(indexRemove, 1)
+                        c_manager.save()
+                    }
+                    
                 })
                 
                 res.json({isDeleted:true})
