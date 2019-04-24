@@ -7,6 +7,7 @@ let EntitySchema = new Schema({
 
     entity_name: String,
     entity_type: String,
+    entity_mac: String,
     
     c_manager: String,
     operator: String,

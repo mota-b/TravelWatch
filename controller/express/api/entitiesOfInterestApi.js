@@ -14,19 +14,16 @@ router.post("/", restriction_0_1A, (req, res, next) => {
     // Get the json Item
     let newItem = JSON.parse(req.body.newItem)
     
-    console.log("newItem");
-    console.log(newItem);
     
     // Check if the manager exist
     CompanyManager.findById(newItem.c_manager, (err, c_manager) => {
         if (c_manager){
-            console.log("c_manager");
-            console.log(c_manager);
-
+            
             // Create the new Operator
             let newEntity = new Entity({
                 entity_name: newItem.pool_name,
                 entity_type: newItem.entity_type,
+                entity_mac: newItem.entity_mac,
                 
                 c_manager: newItem.c_manager,
                 operator: newItem.operator,
@@ -35,8 +32,6 @@ router.post("/", restriction_0_1A, (req, res, next) => {
                 locationHistory: []
             })
             
-            console.log("newEntity");
-            console.log(newEntity);
             
             // Save the document
             newEntity.save();
@@ -78,6 +73,7 @@ router.get("/", restriction_0_1A_2A, (req, res, next) => {
                 "_id",
                 "entity_name",
                 "entity_type",
+                "entity_mac",
                 
                 "c_manager",
                 "operator",
@@ -86,6 +82,7 @@ router.get("/", restriction_0_1A_2A, (req, res, next) => {
             new_item_schema = {
                 entity_name: "",
                 entity_type: "",
+                entity_mac: "",
                 
                 c_manager: "",
                 operator: "",
