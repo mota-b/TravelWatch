@@ -1,7 +1,11 @@
 // Models
-var User = require("../model/userModel")
-var Chat = require("../model/chatModel")
-var mongoose = require("mongoose")
+let mongoose = require("mongoose")
+let Operator = require("../../../model/OperatorModel"),
+    Client = require("../../../model/ClientModel"),
+    Product = require("../../../model/ProductModel"),
+    Command = require("../../../model/CommandModel")
+
+
 
 module.exports = {
 
@@ -18,24 +22,23 @@ module.exports = {
     },
 
     // Check the user authentification in the handshake
-    is_user : (client) => {
+    is_user : (socket_client) => {
 
-        let token = client.handshake.query.token
+        let token = socket_client.handshake.query.token
         
         // Check token exist
         if(token){
             
             // verify the token
-            let User = require("../model/userModel"),
-                decode = User.verifyJWT(token) 
+            let decode = Operator.verifyJWT(token) 
 
                 // Check user existance from the decoded token
                 if (decode.user){
                     
                     // bind user data to his socket
-                    client["user"] = decode.user
-                    client["user"].socket_id = client.id  
-                    client["user"].isOnline = true  
+                    socket_client["user"] = decode.user
+                    socket_client["user"].socket_id = socket_client.id  
+                    socket_client["user"].isOnline = true  
                 
                     return true;
                 }else{
@@ -50,12 +53,12 @@ module.exports = {
     
     },
 
-    // Return socket id of a client from namespace clients list
+    // Return socket id of a socket_client from namespace socket_clients list
     get_scoketID: (namespace_socket, username) => {
 
-        // Check if the user is inside the namespace clients list
-        if(namespace_socket.clients_[username]){
-            return namespace_socket.clients_[username].id
+        // Check if the user is inside the namespace socket_clients list
+        if(namespace_socket.socket_clients_[username]){
+            return namespace_socket.socket_clients_[username].id
         }else{
             return null
         }
@@ -70,19 +73,19 @@ module.exports = {
         //console.log("avant display")
         //console.log(namespace_socket.name)
         
-        // Clients of the namespace
+        // socket_clients of the namespace
         // console.log("\nchecking *****!!! Sockets of the namespace ",namespace_socket.name, ": {" );
         // Object.keys(sockets).forEach(function(key) {
         //     console.log("\t* ", key, " ==> socket of user : ", sockets[key].user.username)
         // });
         // console.log("}");
 
-        //console.log(namespace_socket.clients_[username].socket_id)
-        //console.log(sockets[namespace_socket.clients_[username].socket_id])
-        // Check if the socket of the client is inside the namespace
-        //console.log(sockets[namespace_socket.clients_[username].socket_id])
-        if(namespace_socket.clients_[username] && sockets[namespace_socket.clients_[username].socket_id]){
-            return sockets[namespace_socket.clients_[username].socket_id]
+        //console.log(namespace_socket.socket_clients_[username].socket_id)
+        //console.log(sockets[namespace_socket.socket_clients_[username].socket_id])
+        // Check if the socket of the socket_client is inside the namespace
+        //console.log(sockets[namespace_socket.socket_clients_[username].socket_id])
+        if(namespace_socket.socket_clients_[username] && sockets[namespace_socket.socket_clients_[username].socket_id]){
+            return sockets[namespace_socket.socket_clients_[username].socket_id]
         }else{
             return null;
         }

@@ -80,6 +80,12 @@ module.exports = {
                 scripts.push("/js/"+page+"Script.js")
             break;
     
+            case 'overwatch':
+                links.push("/css/"+page+"Style.css")
+                scripts.push("/socket.io/socket.io.js")
+                scripts.push("/js/"+page+"Script.js")
+                
+            break;
     
             default:
             break;

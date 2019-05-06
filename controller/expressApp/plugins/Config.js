@@ -1,18 +1,19 @@
 /**
  * Module dependencies.
  */
-let express = require('express');
-    path = require('path');
-    morgan = require('morgan');
-    cookieParser = require('cookie-parser');
-    bodyParser = require('body-parser');
-    session = require('express-session')
-    cors = require('cors')
+let express = require('express')
+    path = require('path'),
+    morgan = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    session = require('express-session'),
+    cors = require('cors');
 
 module.exports = function (app) {
 
     // Views and Public paths
     app.set('view engine', 'ejs');
+    
     app.set('views', path.join(__dirname, '../../../view/views'));
     app.use("*/js", express.static(path.join(__dirname, "../../../view/public/javascripts")));
     app.use("*/css", express.static(path.join(__dirname, "../../../view/public/stylesheets")));

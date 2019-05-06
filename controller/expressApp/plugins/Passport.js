@@ -7,7 +7,7 @@ let passport = require('passport'),
     { ExtractJwt } = require('passport-jwt')
 
 
-module.exports = function(app){
+module.exports = function(){
     
     
     

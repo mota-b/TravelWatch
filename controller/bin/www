@@ -65,15 +65,27 @@ let serverManager = {
 }
 
 // Express application
-let app = require('../express/app'),
+let app = require('../expressApp/app'),
   port = serverManager.normalizePort(process.env.PORT || '3000');
 
 app.set('port', port)
 
 // Server config
 let server = http.createServer(app);
-
 server.listen(port);
+
+//-----------------------------------------
+/**
+ * TODO => Declaration of the Socket 
+ * for global inheritance with the server
+ */ 
+
+var SocketIo = require('socket.io')(server);
+
+var SocketCrowd = require("../expressApp/plugins/Socket")(SocketIo.of("/crowd"))
+
+//-----------------------------------------
+
 server.on('error', serverManager.onError);
 server.on('listening', serverManager.onListening);
 

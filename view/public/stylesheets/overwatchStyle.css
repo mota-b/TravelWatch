@@ -1,0 +1,18 @@
+/* COLORS */
+/* #ff996a Orange */
+/* #6ad0ff Blue */
+/* #cb6aff Purple */
+/* #ffe66a Yello */
+
+
+/* Global */
+body {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+.section{
+  padding-top: 60px;
+  height: 100vh;
+}

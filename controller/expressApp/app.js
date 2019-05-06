@@ -5,6 +5,7 @@
 let express = require('express'),
   app = express();
 
+  
 
 /**
  * Express Config
@@ -25,7 +26,7 @@ require('./plugins/Security')(app);
 /**
  * Passport
  */
-require('./plugins/Passport')(app);
+require('./plugins/Passport')();
 
 /**
  * Router initialising
