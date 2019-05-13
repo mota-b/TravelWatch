@@ -129,7 +129,16 @@ module.exports = function(){
                             email : operator.email,
                             _id: operator._id,
                         },
-                        token : Operator.generateJWT(operator._id),
+                        token : Operator.generateJWT({
+                            _id: operator._id,
+                            user: {
+                                _id: operator._id,
+                                username: operator.username,
+                                email : operator.email,
+                                entities: operator.entities
+                            }
+                            
+                        }),
                         type: "operator"
                     }
                     done(false, result, null )

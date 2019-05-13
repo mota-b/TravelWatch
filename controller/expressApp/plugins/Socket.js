@@ -30,8 +30,9 @@ module.exports = function (crowd) {
         
 
         // Check and authentify the socket_client
-        if(ssm.is_user(socket_client)){
-
+        if(ssm.is_user(socket_client) || ssm.is_entityOfInterest(socket_client)){
+            console.log(socket_client.user);
+            
             //LOG console.log("the user is valid");
     
             // Initialise the socket_clients socket list

@@ -34,17 +34,15 @@ OperatorSchema.statics.generateJWT = (data, options) => {
     
     if (options){
         return jwt.sign(
-            {
-                _id: data
-            },
+            data,
+
             process.env.OPERATOR_TOKEN_SECRET,
             options
         );
     }else{
         return jwt.sign(
-            {
-                _id: data
-            },
+            data,
+            
             process.env.OPERATOR_TOKEN_SECRET,
             { expiresIn: "1d" }
         );

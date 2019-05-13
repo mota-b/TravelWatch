@@ -24,25 +24,25 @@ $(document).ready(function(){
 
 
 
-    console.log("over9iiw");
+    // console.log("over9iiw");
 
-    $.ajax( {
-        url:'/api/'+collection_name+'/self'+user.ui_data._id,
-        type:"GET",     
-        headers: {
-            token: user.token
-        },   
-        success: function(data) { 
+    // $.ajax( {
+    //     url:'/api/'+collection_name+'/self'+user.ui_data._id,
+    //     type:"GET",     
+    //     headers: {
+    //         token: user.token
+    //     },   
+    //     success: function(data) { 
             
-            if (data.error){ 
-                alert(data.error.message)
-            }
-            else{
-                item = data
-            }
-        },
+    //         if (data.error){ 
+    //             alert(data.error.message)
+    //         }
+    //         else{
+    //             item = data
+    //         }
+    //     },
         
-    });
+    // });
     
 })
 
@@ -53,7 +53,10 @@ let
 socketClientManager = {
     // connect to the main socket (the crowd)
     connect_namespace : (nsp) => {
+        
         if (user){
+            
+        
             return io( nsp, {
                 query: {
                     // email: user.email,
