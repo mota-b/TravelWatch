@@ -19,9 +19,54 @@
       <div class="modal-footer">
         <button id='validate'type='button' class='btn btn-success' data-dismiss='modal'>Validate</button>
 
+        <button id='displayQRC-form'type='button' class='btn btn-default'>QRC</button>
         <button id='update'type='button' class='btn btn-primary' data-dismiss='modal'>Update</button>
         <button id="delete" type="button" class="btn btn-secondary" data-dismiss="modal">Delete</button>
-      </div>
+      
+      
+        <!-- Material input -->
+        <!-- <div class="md-form" id="qrc-form">
+          <input type="text" id="url" class="form-control">
+          <label for="form1">Server URL</label>
+        </div>-->
+      </div> 
+
+      <!-- s -->
+
+      
+      <!-- Material auto-sizing form -->
+      <form id="qrc-form">
+        <!-- Grid row -->
+        <div class="form-row align-items-center" >
+        
+          <!-- Grid column -->
+          <div class="col-auto">
+            <!-- Material input -->
+            <label class="sr-only" for="server_url">Server URL</label>
+            <div class="md-form input-group mb-3">
+              <input type="text" class="form-control pl-0 rounded-0" id="server_url"
+                placeholder="Server URL">
+            </div>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-auto" id="generate-qrc">
+            <button class="btn btn-primary mb-0">Generate</button>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+
+        <!-- Grid row -->
+        <div class="form-row align-items-center" >
+          <div id="qrc"></div>
+        </div>
+        <!-- Grid row -->
+
+      </form>
+      <!-- Material auto-sizing form -->
+
     </div>
   </div>
 </div>

@@ -66,6 +66,7 @@ module.exports = {
     
                 scripts.push("https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js")
                 scripts.push("/bower/jsoneditor/dist/jsoneditor.min.js")
+                scripts.push("/bower/jquery-qrcode/jquery.qrcode.min.js")
                 scripts.push("/js/"+page+"Script.js")
                 
             break;

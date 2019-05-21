@@ -3,9 +3,12 @@ let mongoose = require("mongoose")
 let Operator = require("../../../model/OperatorModel"),
     Entity = require("../../../model/EntityOfInterestModel"),
     Product = require("../../../model/ProductModel"),
-    Command = require("../../../model/CommandModel")
+    Command = require("../../../model/CommandModel");
 
 
+
+
+ 
 
 module.exports = {
 
@@ -34,68 +37,6 @@ module.exports = {
             // verify the token
             let decode = Operator.verifyJWT(token) 
                 
-                // Check user existance from the decoded token
-                if (decode.user){
-                    
-                    
-                    // bind user data to his socket
-                    socket_client["user"] = decode.user
-                    socket_client["user"].socket_id = socket_client.id  
-                    socket_client["user"].isOnline = true  
-                
-                    return true;
-                }else{
-                    // Not a valid token
-                    return false
-                }
-            
-        }else {
-            // No token found
-            return false;
-        }
-    
-    },
-
-    // Check the entity Of interest in the handshake
-    is_entityOfInterest : (socket_client) => {
-
-        console.log("attempt socket entity");
-        
-        
-        let _id = socket_client.handshake.query._id
-        // TODO add mac in query
-
-        // Check token exist
-        if(token){
-            
-            // verify the token
-            // let decode = Operator.verifyJWT(token) 
-            
-            
-            Entity.findById(_id, (err, entity) =>{
-                if(entity){
-                    let userEntity = {
-                        entity_name: entity.entity_name,
-                        entity_type: entity_type,
-                        entity_mac: entity_mac,
-                        
-                        c_manager: entity.c_manager,
-                        operator: entity.operator
-                        
-                    }
-                     
-                    // bind user data to his socket
-                    socket_client["user"] = userEntity
-                    socket_client["user"].socket_id = socket_client.id  
-                    socket_client["user"].isOnline = true  
-            
-                    return true;
-                }else{
-                    // Not a valid token
-                    return false
-                }
-            })
-            
             // Check user existance from the decoded token
             if (decode.user){
                 
@@ -113,11 +54,102 @@ module.exports = {
             
         }else {
             // No token found
-            return false;
+            return false
+            
         }
     
     },
 
+    // Check the entity Of interest in the handshake
+    is_entityOfInterest :  (socket_client) => {
+
+        console.log("attempt socket entity");
+        
+        let data =  JSON.parse(socket_client.handshake.query.data)
+        
+        let token = data.token
+        
+
+        // verify the token
+        let decode = Entity.verifyJWT(token) 
+        
+        console.log(decode);
+        
+        if (decode) {
+            // Check user existance from the decoded token
+            if (decode.entity_name){
+                    
+                decode.username = decode.entity_name
+                // bind user data to his socket
+                socket_client["user"] = decode
+                socket_client["user"].socket_id = socket_client.id  
+                socket_client["user"].isOnline = true  
+            
+                return true;
+            }else{
+                // Not a valid token
+                return false
+            }    
+        }else{
+            return false
+        }
+        
+
+
+        return false;
+        // Check token exist
+        // if(_id){
+            
+        //     // verify the token
+        //     // let decode = Operator.verifyJWT(token) 
+            
+        //     // Check user existance from the token "_id"
+        //     Entity.findById(_id).exec( (err, entity) =>{
+        //         if(entity){
+        //             // console.log(entity);
+        //             // console.log(entity._id);
+                    
+        //             let userEntity = {
+        //                 username: entity.entity_name,
+        //                 entity_name: entity.entity_name,
+        //                 entity_type: entity.entity_type,
+        //                 entity_mac: entity.entity_mac,
+                        
+        //                 c_manager: entity.c_manager,
+        //                 operator: entity.operator
+                        
+        //             }
+                
+                    
+        //             // bind user data to his socket
+        //             socket_client["user"] = userEntity
+        //             socket_client["user"].socket_id = socket_client.id  
+        //             socket_client["user"].isOnline = true  
+        //     console.log(socket_client["user"]);
+            
+        //             // console.log(socket_client);
+                    
+        //             return true;   
+        //         }else{
+        //             // Not a valid token
+        //             return false
+        //         }
+        //     }) 
+        //     return true;
+            
+            
+        
+            
+            
+            
+        // }else {
+        //     // No token found
+        //     return false;
+        // }
+
+    },
+
+   
     // Return socket id of a socket_client from namespace socket_clients list
     get_scoketID: (namespace_socket, username) => {
 

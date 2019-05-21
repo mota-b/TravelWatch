@@ -33,14 +33,31 @@ router.post("/", restriction_0_1A, (req, res, next) => {
             })
             
             
-            // Save the document
-            newEntity.save();
+            // Save the document (new Creation)
+            newEntity.save()
+ 
 
             // Bind the new Operator to the manager
             c_manager.entities.push(newEntity._id)
             c_manager.save()
 
-            res.json({isCreated : true, _id: newEntity._id})
+            let token = Entity.generateJWT({
+                entity_name: newEntity.entity_name,
+                entity_type: newEntity.entity_type,
+                entity_mac: newEntity.entity_mac,
+                
+                c_manager: newEntity.c_manager,
+                operator: newEntity.operator,
+                pool_name: newEntity.pool_name
+            })
+
+          
+            
+            res.json({
+                isCreated : true, 
+                _id: newEntity._id, 
+                entity_token: token 
+            })
         }else{
             res.json({isCreated : false})
         }
@@ -61,10 +78,20 @@ router.get("/", restriction_0_1A_2A, (req, res, next) => {
                     _id: entity._id,
                     entity_name: entity.entity_name,
                     entity_type: entity.entity_type,
+                    entity_mac: entity.entity_mac,
+                    entity_token: Entity.generateJWT({
+                        entity_name: entity.entity_name,
+                        entity_type: entity.entity_type,
+                        entity_mac: entity.entity_mac,
+                        
+                        c_manager: entity.c_manager,
+                        operator: entity.operator,
+                        pool_name: entity.pool_name
+                    }),
                     
                     c_manager: entity.c_manager,
                     operator: entity.operator,
-                    pool_name: entity.pool_name,
+                    pool_name: entity.pool_name
                     // TODO => populate location_history
                 })
             });
@@ -74,6 +101,9 @@ router.get("/", restriction_0_1A_2A, (req, res, next) => {
                 "entity_name",
                 "entity_type",
                 "entity_mac",
+                
+                
+                
                 
                 "c_manager",
                 "operator",

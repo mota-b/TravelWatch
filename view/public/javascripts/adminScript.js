@@ -63,8 +63,10 @@ function admin_dashBoard (){
     data_table = null
 
     // jQuery action event
-    actionEvent()
+    collection_events()
 
+    // jQuery QRCode event
+    QRCode_events()
 }
 
 
@@ -186,6 +188,8 @@ let api_manager = {
                 else{
                     
                     if(data.isCreated){
+                        console.log(data);
+                        
                         let editorItem = editor.get(),
                         createdItem = {};
                         
@@ -197,10 +201,18 @@ let api_manager = {
                                 new_row.push(data._id)
                                 createdItem[key] = data._id
                             }else{
+                                
                                 createdItem[key] = editorItem[key]
                                 new_row.push(createdItem[key])
                             }
                         });
+
+                        // special entities case
+                        if(data.entity_token){
+                            new_row.push(data.entity_token)
+                            createdItem.entity_token = data.entity_token
+                        }
+
                         collection.push(createdItem) 
 
                         // add item in the dataTable
@@ -320,7 +332,7 @@ table_manager = {
     
 },
 // jQuery Collection action events
-actionEvent = () => {
+collection_events = () => {
     // API Collection Request
     $("#get_collection_form").submit(function(event){
         event.preventDefault()
@@ -333,8 +345,15 @@ actionEvent = () => {
    
     // JSON item Selection
     $(document).on("click", '#table tbody tr', (event) => {
-        
+        $("#qrc-form").css({"display":"none"})
         $("#validate").css({"display":"none"})
+        if($("#collection_name").html() == "entities"){
+            $("#displayQRC-form").css({"display":"inline-block"})
+        }
+        else{
+            $("#displayQRC-form").css({"display":"none"})
+        }
+        
         $("#update").css({"display":"inline-block"})
         $("#delete").css({"display":"inline-block"})
 
@@ -435,4 +454,31 @@ actionEvent = () => {
         }
         
     })
-}
+},
+
+// JQuery QRCode event
+QRCode_events = () => {
+    
+    // Display the QR.Code form
+    $("#displayQRC-form").on("click", (event) => {
+        
+        $("#qrc-form").css({"display":"block"})
+        
+    })
+
+    // Display the QR.Code
+    $("#generate-qrc").on("click", (event) => {
+        event.preventDefault();
+
+        console.log(Selected_item);
+        jQuery("#qrc").qrcode({
+            //render:"table"
+            width: 256,
+            height: 256,
+            text: JSON.stringify({
+                token: Selected_item.entity_token,
+                server_url: $("#server_url").val()
+            })
+        });
+    })
+} 

@@ -30,7 +30,10 @@ module.exports = function (crowd) {
         
 
         // Check and authentify the socket_client
-        if(ssm.is_user(socket_client) || ssm.is_entityOfInterest(socket_client)){
+        let v = ssm.is_user(socket_client) || ssm.is_entityOfInterest(socket_client)
+        
+        
+        if( v ){
             console.log(socket_client.user);
             
             //LOG console.log("the user is valid");
@@ -97,6 +100,10 @@ module.exports = function (crowd) {
          * Socket_client [Events]
          */
         // On contact list event 
+        socket_client.on("entity_location", (data) =>{
+            console.log(data);
+        })
+        
         socket_client.on("contact list", function () {
 
             Chat.find({ $or: [{ contact1: socket_client.user.username}, { contact2: socket_client.user.username}] }).exec().then(function(chats){

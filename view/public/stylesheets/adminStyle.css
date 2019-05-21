@@ -60,3 +60,15 @@ body {
 #validate{
   display: none;
 }
+#displayQRC-form{
+  display: none;
+  float: left;
+}
+#qrc{
+  width: 20%;
+  height: 20%;
+}
+#qrc-form{
+  display: none;
+  padding-left: 20px;
+}
