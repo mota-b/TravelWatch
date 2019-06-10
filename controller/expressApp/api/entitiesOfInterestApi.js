@@ -21,7 +21,7 @@ router.post("/", restriction_0_1A, (req, res, next) => {
             
             // Create the new Operator
             let newEntity = new Entity({
-                entity_name: newItem.pool_name,
+                entity_name: newItem.entity_name,
                 entity_type: newItem.entity_type,
                 entity_mac: newItem.entity_mac,
                 

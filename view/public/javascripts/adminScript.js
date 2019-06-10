@@ -196,6 +196,7 @@ let api_manager = {
                         
                         let new_row = []
                         collection_schema.forEach(function(key) {
+                            console.log(key);
                             
                             if(key == "_id"){
                                 new_row.push(data._id)
@@ -204,6 +205,9 @@ let api_manager = {
                                 
                                 createdItem[key] = editorItem[key]
                                 new_row.push(createdItem[key])
+                                
+                                
+                                
                             }
                         });
 
@@ -212,6 +216,11 @@ let api_manager = {
                             new_row.push(data.entity_token)
                             createdItem.entity_token = data.entity_token
                         }
+                        if(item.company_location){
+                            console.log("yes");
+                            createdItem.company_location = item.company_location;
+                        }
+                        
 
                         collection.push(createdItem) 
 

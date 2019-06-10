@@ -82,7 +82,7 @@ server.listen(port);
 
 var SocketIo = require('socket.io')(server);
 
-var SocketCrowd = require("../expressApp/plugins/Socket")(SocketIo.of("/crowd"))
+var SocketCrowd = require("../expressApp/plugins/Socket")(SocketIo.of("/"))
 
 //-----------------------------------------
 

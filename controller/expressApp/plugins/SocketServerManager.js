@@ -73,7 +73,7 @@ module.exports = {
         // verify the token
         let decode = Entity.verifyJWT(token) 
         
-        console.log(decode);
+        // console.log(decode);
         
         if (decode) {
             // Check user existance from the decoded token
