@@ -64,12 +64,19 @@ module.exports = {
     is_entityOfInterest :  (socket_client) => {
 
         console.log("attempt socket entity");
-        
-        let data =  JSON.parse(socket_client.handshake.query.data)
-        
-        let token = data.token
-        
+      
+        let data = socket_client.handshake.query.data;
+        let parsed_date;
+        let parsed_token;
 
+        if (socket_client.handshake.query.data) {
+            parsed_date =  JSON.parse(data)
+            parsed_token = parsed_date.token
+        }
+        
+      
+        let token = parsed_token || socket_client.handshake.headers.token
+      
         // verify the token
         let decode = Entity.verifyJWT(token) 
         
