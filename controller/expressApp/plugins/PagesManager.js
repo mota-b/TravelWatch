@@ -83,7 +83,11 @@ module.exports = {
     
             case 'overwatch':
                 links.push("/css/"+page+"Style.css")
+                // links.push("/bower/leaflet/dist/leaflet.css")
+
+                // scripts.push("/bower/leaflet/dist/leaflet.css")
                 scripts.push("/socket.io/socket.io.js")
+                scripts.push("/js/mapManagerScript.js")
                 scripts.push("/js/"+page+"Script.js")
                 
             break;

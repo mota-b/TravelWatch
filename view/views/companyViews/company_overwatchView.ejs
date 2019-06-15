@@ -5,19 +5,52 @@
     
     <!-- Stylesheets -->
     <%- include('../requireViews/linksView.ejs', {}) %>
-    <script type="script"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+
+
   </head>
   <body>
     <%- include('../navBarView.ejs', {}) %>
     
-
+    <!-- Section 1  -->
     <div class="section">
-      <h1> Overwatch </h1>
-    </div>
+
+      <!-- lef-list + map -->
+      <div class="my-container">
+        <div class="row">
+          <!-- left-list -->
+          <div class="col-3" id="left-list">
+            <div id="operator-info"></div>
+            <div id="entities-list"></div>
+            
+          </div> <!-- END left-list -->
+          
+          <!-- main-map -->
+          <div class="col-9" id="main-map"></div> <!-- END main-map --> 
+
+        </div>
+      </div> <!-- END lef-list + map -->
+
+    </div> <!-- END Section 1  -->
+  
+    <!-- Section 2  -->
+    <div class="section" id="s2">
+      hello
+    </div> <!-- END Section 1  -->
     
     
+
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+ integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+ crossorigin=""></script>
 
     <!-- Scripts -->
     <%- include('../requireViews/scriptsView.ejs', {}) %>
+
+   
   </body>
 </html>

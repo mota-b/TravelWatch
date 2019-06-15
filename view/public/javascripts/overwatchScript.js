@@ -10,9 +10,9 @@ $(document).ready(function(){
     // Check if there client is loged and no preview connection
     if(user && !chat){
         scm =  socketClientManager
-
+        
         // Connect to the main socket
-        chat = scm.connect_namespace("/crowd");
+        chat = scm.connect_namespace("/");
 
         // Load namespace event
         scm.load_namespace_events();
@@ -22,27 +22,30 @@ $(document).ready(function(){
         //chat.emit("contact list")
     }
 
+    /**
+     * Main-Map part
+     */
+    if(user){
+        main_map = {
+            map: mm.createmap("main-map",[35.705839, -0.631704], 13),
+            markers: [],
+            arcs: []
+        }
 
-
-    // console.log("over9iiw");
-
-    // $.ajax( {
-    //     url:'/api/'+collection_name+'/self'+user.ui_data._id,
-    //     type:"GET",     
-    //     headers: {
-    //         token: user.token
-    //     },   
-    //     success: function(data) { 
-            
-    //         if (data.error){ 
-    //             alert(data.error.message)
-    //         }
-    //         else{
-    //             item = data
-    //         }
-    //     },
+        let loc1 = [35.705839, -0.631704]
+        // mm.add_marker(main_map, loc1, "normal")
+        mm.add_marker_home(main_map, loc1, "home-base")
         
-    // });
+        
+        // mm.add_marker_entity(main_map, loc1, "taxi")
+        // setInterval(()=>{
+        //     mm.update_marker(main_map.markers[1], [main_map.markers[1].getLatLng().lat,main_map.markers[1].getLatLng().lng+0.001])
+        // },1000)
+    }
+
+
+
+
     
 })
 

@@ -12,7 +12,58 @@ body {
   margin: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+::-webkit-scrollbar {
+  width: 0px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
+}
+
+
 .section{
-  padding-top: 60px;
+  padding-top: 2%;
   height: 100vh;
+  width: 100vw;
+}
+
+.my-container{
+  background-color: rgb(50, 83, 111);
+  height: 100%;
+  width: 100%;
+}
+.row{
+  background-color: rgb(99, 36, 36);
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+#left-list{
+  background-color: #bdc3c7;
+  padding: 0;
+}
+
+#main-map{
+  background-color: #34495e;
+}
+#operator-info, #entities-list{
+  width: 100%;
+}
+#operator-info{
+  height: 20%;
+  background-color: #a5a9ac ;
+}
+#entities-list{
+  height: 80%;
+  background-color: #82868a ;
+}
+
+.custom-location-entity-icon{
+  z-index: 300 !important;
+}
+.custom-location-home-icon{
+  z-index: 301 !important;
 }
