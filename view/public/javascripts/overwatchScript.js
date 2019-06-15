@@ -42,7 +42,7 @@ $(document).ready(function(){
                     alert(data.error.message)
                 }
                 else{
-                    // console.log(data);
+                    console.log(data);
 
                     $("#operator_name").html(user.ui_data.username)
                     $("#operator_post").html("Operator")
@@ -50,6 +50,22 @@ $(document).ready(function(){
                     $("#company_name").html(data.c_manager.company_name)
                     $("#c_manager_name").html(data.c_manager.username)
                     
+                    data.entities.forEach(entity => {
+                        let icon
+                        if(entity.entity_type=="Smartphone"){
+                            icon = ""
+                        }
+                        else{
+                            icon = ""
+                        }
+                        $("#entities-list ul").append(
+                           
+                            "<li class='list-group-item active'>"
+                            +"   <div class='md-v-line'></div><i class='fas fa-laptop mr-4 pr-3'></i>"+entity.entity_name
+                            +"</li>" 
+                        )
+                        
+                    });
                 }
             },
             
