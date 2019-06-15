@@ -10,9 +10,10 @@ let OperatorSchema = new Schema({
     username: {type: String, require: true, unique: true},
     password: {type: String, require: true},
     
-    c_manager: String, // Company Manager
+    // c_manager: String, // Company Manager
+    c_manager: { type: Schema.Types.ObjectId, ref: 'companyManager' }, // Company Manager
     
-    entities: Array
+    entities: [{ type: Schema.Types.ObjectId, ref: 'entity' }]
 }) 
 
 /**

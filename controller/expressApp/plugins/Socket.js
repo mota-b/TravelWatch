@@ -2,11 +2,8 @@
 // Socket Server Manager
 let ssm = require("./SocketServerManager")
 // Models 
-let Operator = require("../../../model/OperatorModel"),
-    Client = require("../../../model/ClientModel"),
-    Product = require("../../../model/ProductModel"),
-    Command = require("../../../model/CommandModel")
-
+let Operator = require("../../../model/OperatorModel");
+   
 
 
 
@@ -34,7 +31,8 @@ module.exports = function (crowd) {
         
         
         if( v ){
-            console.log(socket_client.user);
+            
+            // console.log(socket_client.user);
             
             //LOG console.log("the user is valid");
     
@@ -85,10 +83,10 @@ module.exports = function (crowd) {
         
 
         // Wellcome to the crowd socket
-        console.log("\n<< ", socket_client.user.username, ' >> of ID: ', socket_client.id, ' is connected to ',socket_client.nsp.name);
+        console.log("\n[Welcome!]\n<< ", socket_client.user.username, ' >> of ID: ', socket_client.id, ' is connected to the namespace ',socket_client.nsp.name);
         
         // socket_clients of the namespace
-        console.log("\nsocket_clients of the namespace ",socket_client.nsp.name, ": {" );
+        console.log("\n[Namespace Log!]\nsocket_clients of the namespace ",socket_client.nsp.name, ": {" );
         Object.keys(crowd.socket_clients_).forEach(function(key) {
             console.log("\t* ", key, " ==> socket_ID: ", crowd.socket_clients_[key].socket_id)
         });
@@ -211,10 +209,10 @@ module.exports = function (crowd) {
 
         // On socket_client Disconnect event
         socket_client.on("disconnect", function () {
-            console.log("good by ", "<< ",socket_client.user.username," >> of ID: ", socket_client.id," from ", socket_client.nsp.name )
+            console.log("\n[Good by!]\n ", "<< ",socket_client.user.username," >> of ID: ", socket_client.id," from ", socket_client.nsp.name )
 
             // socket_clients of the namespace
-            console.log("\nsocket_clients of the namespace ",socket_client.nsp.name, ": {" );
+            console.log("\n[Namespace Log!]\nsocket_clients of the namespace ",socket_client.nsp.name, ": {" );
             Object.keys(crowd.socket_clients_).forEach(function(key) {
                 console.log("\t* ", key)
             });

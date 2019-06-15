@@ -53,9 +53,9 @@ router.get("/", restriction_0, (req, res, next) => {
                     username: c_manager.username,
                     email: c_manager.email,
                     company_location: c_manager.company_location,
-                    isCompanyUnlocked: c_manager.isCompanyUnlocked
-                    // TODO => populate operators
-                    // TODO => populate entities of interest
+                    isCompanyUnlocked: c_manager.isCompanyUnlocked,
+                    operators: c_manager.operators,// TODO => populate operators
+                    entities: c_manager.entities,// TODO => populate entities of interest
                 })
             });
 
@@ -77,9 +77,7 @@ router.get("/", restriction_0, (req, res, next) => {
                     lat: "",
                     lon: ""
                 },
-                isCompanyUnlocked: false
-                // TODO => populate operators
-                // TODO => populate entities of interest
+                isCompanyUnlocked: false,
             }
 
             // Return result
@@ -97,7 +95,8 @@ router.get("/:id", restriction_0, (req, res, next) => {
                 res.json(c_manager)
             }
         })
-    }else{console.log(req.params, id);
+    }else{
+        res.json({err:true, message:"no valid parameters"})
     }
     
 })
@@ -131,6 +130,7 @@ router.delete("/:id", restriction_0, (req, res, next) => {
 
     let  {id} = req.params
 
+    // Delete the c_manager by id
     CompanyManager.findOneAndDelete(
         {_id: id},
         (err, c_manager) =>{
@@ -138,15 +138,23 @@ router.delete("/:id", restriction_0, (req, res, next) => {
                 let Operator = require("../../../model/OperatorModel"),
                     Entity = require("../../../model/EntityOfInterestModel");
                 
-                // cascading delete operators and entities
-                c_manager.operators.forEach((operator)=>{
-                    Operator.findOneAndDelete({_id: operator._id}, (err, op) =>{
+                // cascading delete operators in the c_manager operator's list
+                c_manager.operators.forEach((operator_id)=>{
+                    Operator.findOneAndDelete({_id: operator_id}, (err, operator) =>{
+                        if(!err){
+
+                            // cascading delete entities in the operator entities's list
+                            operator.entities.forEach((entity_id)=>{
+                                Entity.findOneAndDelete({_id: entity_id}, (err, entity) =>{
+                                })
+                            })
+                        }
                     })
                 })
-                c_manager.entities.forEach((entity)=>{
-                    Entity.findOneAndDelete({_id: entity._id}, (err, ent) => {
-                    })
-                })
+                // c_manager.entities.forEach((entity)=>{
+                //     Entity.findOneAndDelete({_id: entity._id}, (err, ent) => {
+                //     })
+                // })
 
                 res.json({isDeleted: true})
             }else{

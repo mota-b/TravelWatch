@@ -1,12 +1,8 @@
 // Models
 let mongoose = require("mongoose")
 let Operator = require("../../../model/OperatorModel"),
-    Entity = require("../../../model/EntityOfInterestModel"),
-    Product = require("../../../model/ProductModel"),
-    Command = require("../../../model/CommandModel");
-
-
-
+    Entity = require("../../../model/EntityOfInterestModel");
+    
 
  
 

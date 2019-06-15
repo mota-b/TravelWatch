@@ -22,6 +22,41 @@ $(document).ready(function(){
         //chat.emit("contact list")
     }
 
+
+    /**
+     * Data needed part
+     */
+    if(user){
+
+        // get self data
+        $.ajax( {
+            url:'/api/operators/self/'+user.ui_data._id,
+            type:"GET",
+            headers: {
+                token: user.token
+            },   
+            
+            success: function(data) { 
+                
+                if (data.error){ 
+                    alert(data.error.message)
+                }
+                else{
+                    // console.log(data);
+
+                    $("#operator_name").html(user.ui_data.username)
+                    $("#operator_post").html("Operator")
+
+                    $("#company_name").html(data.c_manager.company_name)
+                    $("#c_manager_name").html(data.c_manager.username)
+                    
+                }
+            },
+            
+        });
+    }
+
+
     /**
      * Main-Map part
      */

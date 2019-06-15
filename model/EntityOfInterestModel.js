@@ -14,7 +14,7 @@ let EntitySchema = new Schema({
     operator: String,
     pool_name: String,
     
-    location_history: Array
+    location_history: [{ type: Schema.Types.ObjectId, ref: 'location' }]
 }) 
 
 /**
