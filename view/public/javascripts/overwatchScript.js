@@ -53,15 +53,15 @@ $(document).ready(function(){
                     data.entities.forEach(entity => {
                         let icon
                         if(entity.entity_type=="Smartphone"){
-                            icon = ""
+                            icon = "fa-mobile"
                         }
                         else{
-                            icon = ""
+                            icon = "fa-podcast"
                         }
                         $("#entities-list ul").append(
                            
-                            "<li class='list-group-item active'>"
-                            +"   <div class='md-v-line'></div><i class='fas fa-laptop mr-4 pr-3'></i>"+entity.entity_name
+                            "<li class='list-group-item'>"
+                            +"   <div class='md-v-line'></div><i class='fas "+ icon +" mr-4 pr-3'></i>"+entity.entity_name
                             +"</li>" 
                         )
                         
