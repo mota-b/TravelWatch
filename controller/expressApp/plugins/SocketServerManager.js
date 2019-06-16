@@ -1,7 +1,8 @@
 // Models
 let mongoose = require("mongoose")
 let Operator = require("../../../model/OperatorModel"),
-    Entity = require("../../../model/EntityOfInterestModel");
+    Entity = require("../../../model/EntityOfInterestModel"),
+    Location = require("../../../model/LocationModel");
     
 
  
@@ -59,7 +60,7 @@ module.exports = {
     // Check the entity Of interest in the handshake
     is_entityOfInterest :  (socket_client) => {
 
-        console.log("attempt socket entity");
+        // console.log("attempt socket entity");
       
         let data = socket_client.handshake.query.data;
         let parsed_date;
@@ -75,6 +76,7 @@ module.exports = {
       
         // verify the token
         let decode = Entity.verifyJWT(token) 
+       
         
         // console.log(decode);
         
@@ -164,8 +166,8 @@ module.exports = {
         }
     },
     
-    // Return Socket from it's ID
-    get_socket: (namespace_socket, username) => {
+    // Return Socket from it's user_name
+    get_socketByName: (namespace_socket, username) => {
 
         
         
@@ -190,8 +192,47 @@ module.exports = {
             return null;
         }
     },
+    // Return Socket from it's user_id
+    get_socketByID: (namespace_socket, target_id) => {
+        
 
-    // Get the Unic name of the room (left-right/right-left)
+        let sockets = namespace_socket.sockets,
+            target_socket = null;
+
+            // GOAL THE SOCKET ID of the target console.log(sockets[AN_ID]);
+        Object.keys(namespace_socket.socket_clients_).forEach(function(key) {
+            if(namespace_socket.socket_clients_[key]._id == target_id){
+                // console.log(namespace_socket.socket_clients_[key]);
+                target_socket = sockets[namespace_socket.socket_clients_[key].socket_id]
+
+            }
+
+        });
+        
+        return target_socket
+        
+        //console.log("avant display")
+        //console.log(namespace_socket.name)
+        
+        // socket_clients of the namespace
+        // console.log("\nchecking *****!!! Sockets of the namespace ",namespace_socket.name, ": {" );
+        // Object.keys(sockets).forEach(function(key) {
+        //     console.log("\t* ", key, " ==> socket of user : ", sockets[key].user.username)
+        // });
+        // console.log("}");
+
+        //console.log(namespace_socket.socket_clients_[username].socket_id)
+        //console.log(sockets[namespace_socket.socket_clients_[username].socket_id])
+        // Check if the socket of the socket_client is inside the namespace
+        //console.log(sockets[namespace_socket.socket_clients_[username].socket_id])
+        // if(namespace_socket.socket_clients_[username] && sockets[namespace_socket.socket_clients_[username].socket_id]){
+        //     return sockets[namespace_socket.socket_clients_[username].socket_id]
+        // }else{
+        //     return null;
+        // }
+    },
+
+    // Get the Unic name of the room (left-right/right-left) in case of 2 peers connection
     get_roomName: (data) => { if(data.from>data.to) return data.from+"-"+data.to; else return data.to+"-"+data.from;},
     
     // Chat responce 
@@ -259,6 +300,52 @@ module.exports = {
                 console.log(err);
                      
            
+            }
+        })
+    },
+
+    // Chat responce 
+    newLocation: (user, room_name, data) => {
+        
+        let from = data.sender,
+                to = data.to,
+                room = room_name
+        console.log("data");
+        console.log(data);
+        // console.log("user");
+        // console.log(user);
+
+        
+        // Create the New lecation
+        Entity.findById(user._id, (err, entity) => {
+            if (entity){
+
+                let newLocation = new Location({
+                    entity_id: user._id,
+                    provider: data.provider,
+                    date: data.date,
+                    lat_lon: {
+                        lat: data.lat_lon[0],
+                        lng: data.lat_lon[1]
+                    },
+                    accuracy: data.accuracy,
+                    altitude: data.altitude,
+                    asimuth: data.asimuth,
+                    speed: data.speed,
+                    time: data.time,
+                    satellites: data.curent_satellites
+                })
+            
+            
+                // Save the document (new Creation)
+                newLocation.save()
+        
+
+                // Bind the new  location to the Entity
+                entity.location_history.push(newLocation._id)
+                entity.save()
+
+                    
             }
         })
     }

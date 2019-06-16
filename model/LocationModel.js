@@ -13,9 +13,11 @@ let LocationSchema = new Schema({
         lng: String
     },
     altitude: String,
+    accuracy:String,
     asimuth: String,
     speed: String,
-    time: String
+    time: String,
+    satellistes: String
 }) 
 
 /**

@@ -92,6 +92,8 @@ router.get("/", restriction_0_1A_2A, (req, res, next) => {
                     entity_type: entity.entity_type,
                     entity_mac: entity.entity_mac,
                     entity_token: Entity.generateJWT({
+
+                        _id: entity._id,
                         entity_name: entity.entity_name,
                         entity_type: entity.entity_type,
                         entity_mac: entity.entity_mac,

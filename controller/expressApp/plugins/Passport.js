@@ -207,7 +207,7 @@ module.exports = function(){
             secretOrKey: process.env.ADMIN_TOKEN_SECRET
         },
         (decode, done) => {
-            console.log("This is The JWT strategy of admin");
+            // console.log("This is The JWT strategy of admin");
             if(decode){
                 // True token
                 done(false, decode, null);
@@ -226,7 +226,7 @@ module.exports = function(){
             secretOrKey: process.env.COMPANY_MANAGER_TOKEN_SECRET
         },
         (decode, done) => {
-            console.log("This is The JWT strategy of Company Manager");
+            // console.log("This is The JWT strategy of Company Manager");
             if(decode){
                 // True token
                 done(false, decode, null);
@@ -244,7 +244,7 @@ module.exports = function(){
             secretOrKey: process.env.MATE_TOKEN_SECRET
         },
         (decode, done) => {
-            console.log("This is The JWT strategy of mate");
+            // console.log("This is The JWT strategy of mate");
             if(decode){
                 // True token
                 done(false, decode, null);
@@ -262,7 +262,7 @@ module.exports = function(){
             secretOrKey: process.env.OPERATOR_TOKEN_SECRET
         },
         (decode, done) => {
-            console.log("This is The JWT strategy of operator");
+            // console.log("This is The JWT strategy of operator");
             if(decode){
                 // True token
                 done(false, decode, null);

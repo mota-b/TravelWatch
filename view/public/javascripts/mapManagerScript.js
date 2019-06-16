@@ -177,10 +177,33 @@ let mm = {
         //Add ref to the markers list
         map_obj.markers.push(marker);
     },
-
     // Update marker
     update_marker: (marker, new_location) =>{
         marker.setLatLng(new_location).update()
+    },
+    // Get marker by title
+    get_marker: (markers, title)=> {
+        let index = 0;
+        // console.log(markers);
+        
+        
+
+        // LOOP While
+        // (not finished with the list of markers)
+        //    AND 
+        // (The icon title is differenr from the title given)    
+        while(index< markers.length && markers[index].options.title.split("\n")[0] != title){
+            // console.log(markers[index].options.title.split("\n"));
+            index++
+        }
+
+        if(index<markers.length){
+            return markers[index];
+        }else{
+             return null;
+        }
+      
+        
     },
 
 
