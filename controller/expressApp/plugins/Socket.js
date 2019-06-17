@@ -249,8 +249,7 @@ module.exports = function (crowd) {
             } 
             
             console.log("\n[Good by!]\n ", "<< ",socket_client.user.username," >> of ID: ", socket_client.id," from ", socket_client.nsp.name )
-
-            delete socket_client.user
+            delete crowd.socket_clients_[socket_client.user.username]
 
             // socket_clients of the namespace
             console.log("\n[Namespace Log!]\nsocket_clients of the namespace ",socket_client.nsp.name, ": {" );
@@ -258,6 +257,8 @@ module.exports = function (crowd) {
                 console.log("\t* ", key)
             });
             console.log("}");
+
+            delete socket_client.user
         })
 
         // On deliberate quit socket_client event

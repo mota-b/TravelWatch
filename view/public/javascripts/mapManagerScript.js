@@ -132,7 +132,7 @@ let mm = {
         map_obj.markers.push(marker);
     },
     add_marker_entity : function(map_obj, location, name){
-        var icon = new EntityIcon({iconUrl: '/img/taxi_location.png'});
+        var icon = new EntityIcon({iconUrl: '/img/taxi_location-gone.png'});
 
         //Create the marker
         let marker = new L.marker(location,
@@ -177,6 +177,17 @@ let mm = {
         //Add ref to the markers list
         map_obj.markers.push(marker);
     },
+    // Update Icon
+    update_marker_icon: (marker, img) => {
+        marker.setIcon(
+            // EntityIcon.extend({
+            //     options: {
+            //         iconUrl: img
+            //     }
+            // })
+            new EntityIcon({iconUrl: img})
+        ).update();
+    },
     // Update marker
     update_marker: (marker, new_location) =>{
         marker.setLatLng(new_location).update()
@@ -205,15 +216,11 @@ let mm = {
       
         
     },
-
-
     // Delete a marker
     dell_marker: function(map, marker, markers, arcs){
         map.removeLayer(marker);
         markers.splice(markers.indexOf(marker), 1);
     },
-
-
     // Add an arc
     add_arc: function(map, arcs, m1, m2){ 
         let arc = new L.polyline([m1._latlng, m2._latlng]).addTo(map);
@@ -222,13 +229,11 @@ let mm = {
             "line": arc
         })
     },
-
     // Delete arc
     dell_arc: function(map, arc){
         map.removeLayer(arc.line);
         arcs.splice(arcs.indexOf(arc), 1);
     },
-
     // Set dragable (All)
     set_all_dragable: function(markers, bool){
         if (bool)
@@ -236,7 +241,6 @@ let mm = {
         else
             markers.forEach(function (marker) {marker.dragging.disable()});
     },
-
     // Set dragable (One)
     set_dragable: function(marker, bool){
         
@@ -246,7 +250,6 @@ let mm = {
             if (!bool &&  marker.dragging.enabled())
                 marker.dragging.disable()
     },
-
     // Overwatch
     over_watch: function(map, markers){
         if (markers && markers.length>0){

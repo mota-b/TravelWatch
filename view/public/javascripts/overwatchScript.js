@@ -10,10 +10,9 @@ $(document).ready(function(){
     // Check if there client is loged and no preview connection
     if(user && !chat){
         scm =  socketClientManager
-        
         // Connect to the main socket
         chat = scm.connect_namespace("/");
-
+        
         // Load namespace event
         scm.load_namespace_events();
 
@@ -82,7 +81,7 @@ $(document).ready(function(){
                             
                             "<li class='list-group-item' id='"+entity._id+"'>"
                             +"   <div class='md-v-line'></div><i class='fas "+ icon +" mr-4'></i>"+entity.entity_name
-                            +"   <span><i class='fas fa-times-circle ml-4'></i></span>"
+                            +"   <span><i class='fas fa-times-circle'></i></span>"
                             +"</li>" 
                         )
 
@@ -163,6 +162,22 @@ socketClientManager = {
 
     // Load crowd events
     load_namespace_events:  () => {
+        
+        // On Connect event
+        chat.on('connect', function() {
+            
+            $("#operator_status").html("online").css({
+                "color": "#2ecc71"
+            })
+        });
+
+        // On Disconnect event
+        chat.on('disconnect', function() {
+            
+            $("#operator_status").html("offline").css({
+                "color": "#800000"
+            })
+        })
         
         // On chat message event 
         chat.on("chat message", function(data){
@@ -264,6 +279,17 @@ socketClientManager = {
         chat.on("entity_active", function(data){
             if(data.entity_id&& !$("#"+data.entity_id).hasClass("active")){
                 $("#"+data.entity_id).toggleClass("active")
+                
+                // update the icon img
+                if(main_map.markers[1].getIcon().options.iconUrl != "/img/taxi_location-active.png"){
+                    mm.update_marker_icon(main_map.markers[1],'/img/taxi_location-active.png')
+                }
+
+                // update item status
+                if($("#"+data.entity_id).find("span .fas").hasClass("fa-times-circle")){
+                    $("#"+data.entity_id).find("span .fas").toggleClass("fa-times-circle")
+                    $("#"+data.entity_id).find("span .fas").toggleClass("fa-check-circle")
+                }
             }
         })
 
@@ -271,7 +297,19 @@ socketClientManager = {
         chat.on("entity_gone", function(data){
             if(data.entity_id&& $("#"+data.entity_id).hasClass("active")){
                 $("#"+data.entity_id).toggleClass("active")
+
+                // update the icon img
+                if(main_map.markers[1].getIcon().options.iconUrl == "/img/taxi_location-active.png"){
+                    mm.update_marker_icon(main_map.markers[1],'/img/taxi_location-gone.png')
+                }
+
+                // update item status
+                if($("#"+data.entity_id).find("span .fas").hasClass("fa-check-circle")){
+                    $("#"+data.entity_id).find("span .fas").toggleClass("fa-check-circle")
+                    $("#"+data.entity_id).find("span .fas").toggleClass("fa-times-circle")
+                }
             }
+            
         })
 
         // On chat message event 
@@ -284,16 +322,14 @@ socketClientManager = {
             
             let entity_marker = mm.get_marker(main_map.markers, data.entity_name)
             if(entity_marker){
+                
                 // update the marker location
                 let loc_entity = data.new_location.lat_lon
                 mm.update_marker(entity_marker, loc_entity)
                     
                 // update the marker popup 
                 entity_marker.bindPopup(data.entity_name+"\n["+loc_entity+"]");
-                //    console.log(entity_marker.options.title.split("\n"));
-
-                // notify the entity is actif
-
+                  
             }
             else{
                 // create one

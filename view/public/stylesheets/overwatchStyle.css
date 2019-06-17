@@ -65,7 +65,7 @@ body {
 }
 #entities-list{
   height: auto;
-  background-color: #82868a ;
+  /* background-color: #82868a ; */
 }
 
 .custom-location-entity-icon{
@@ -134,6 +134,10 @@ body {
 .twPc-divName a {
   color: inherit !important;
 }
+#operator_status{
+  color: #800000;
+  /* margin-left: 20px; */
+}
 .twPc-divStats {
   margin-left: 11px;
   padding: 10px 0;
@@ -185,4 +189,48 @@ ul.twPc-Arrange {
 }
 .list-group-item span{
   float: right;
+  box-shadow: 0 4px 9px 0 rgba(0, 0, 0, .8), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+  border-radius: 50%;
+}
+.list-group .list-group-item {
+  background-color: #dddddd;
+}
+#entities-list .active{
+  background-color: #2ecc71;
+  border-color: #2ecc71;
+}
+
+
+@keyframes anim {
+  0% {
+    transform: rotate(0deg);
+  }
+  12.5% {
+    transform: rotate(45deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  37.5% {
+    transform: rotate(135deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  62.5% {
+    transform: rotate(225deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  87.5% {
+    transform: rotate(315deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#entities-list .fa-check-circle {
+  animation: anim .6s infinite;
 }
