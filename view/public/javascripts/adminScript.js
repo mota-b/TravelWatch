@@ -423,6 +423,7 @@ collection_events = () => {
         event.preventDefault();
 
         // create the editor
+        $("#qrc-form").css({"display":"none"})
         $("#jsoneditor").html("")
         var container = document.getElementById("jsoneditor");
         var options = {};
@@ -470,7 +471,7 @@ QRCode_events = () => {
     
     // Display the QR.Code form
     $("#displayQRC-form").on("click", (event) => {
-        
+        $("#qrc").html("")
         $("#qrc-form").css({"display":"block"})
         
     })
@@ -479,7 +480,8 @@ QRCode_events = () => {
     $("#generate-qrc").on("click", (event) => {
         event.preventDefault();
 
-        console.log(Selected_item);
+        $("#qrc").html("")
+        // console.log(Selected_item);
         jQuery("#qrc").qrcode({
             //render:"table"
             width: 256,

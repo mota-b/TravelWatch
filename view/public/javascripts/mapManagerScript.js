@@ -133,15 +133,15 @@ let mm = {
     },
     add_marker_entity : function(map_obj, location, name){
         var icon = new EntityIcon({iconUrl: '/img/taxi_location-gone.png'});
-
-        //Create the marker
+        
+        // Create the marker
         let marker = new L.marker(location,
             {
                 title: name,
                 icon: icon
             }
         ).addTo(map_obj.map);
-        
+
         //Set marker events
         // marker.on('drag', function(e){
         //     arcs.forEach(function(arc){

@@ -184,19 +184,19 @@ ul.twPc-Arrange {
   height: 60%;
   overflow-y: scroll;
 }
-.list-group{
+#entities-list .list-group{
   overflow-x: scroll;
 }
-.list-group-item span{
+#entities-list .list-group-item span{
   float: right;
   box-shadow: 0 4px 9px 0 rgba(0, 0, 0, .8), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
   border-radius: 50%;
 }
-.list-group .list-group-item {
+#entities-list .list-group .list-group-item {
   background-color: #dddddd;
 }
 #entities-list .active{
-  background-color: #2ecc71;
+  background-color: #2ecc71 !important;
   border-color: #2ecc71;
 }
 
@@ -233,4 +233,85 @@ ul.twPc-Arrange {
 
 #entities-list .fa-check-circle {
   animation: anim .6s infinite;
+}
+#entities-list .list-group-item:hover{
+  cursor: pointer;
+}
+
+#s2{
+  background-color: #afafaf; 
+  display: none;
+}
+/* User info log */
+#s2 .container{
+  height: 100%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+} 
+#s2 .container .row{
+  box-shadow: 0 4px 9px 0 rgba(0, 0, 0, .8), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+  border-radius: 4%;
+  background: #f3f3f3;
+  height: 100%;
+  padding-top: 2%;
+}
+#s2 .container .row .col-4{
+  
+  border-radius: 4%;
+  height: 100%;
+  background-color: #f3f3f3;
+  min-width: 35%;
+}
+#s2 .container .row .col-4 .card{
+  box-shadow: 7px 7px 12px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+}
+#entity_stat{
+  position: relative;
+}
+#entity_stat p{
+  position: absolute;
+  float: right;
+  right: 0;
+}
+#entity_log_name p{
+  font-size: 20px;
+}
+
+
+#s2 .container .row .col-7{
+  
+  border-radius: 4%;
+  height: 90%;
+  margin-left: 1%;
+  margin-top: 4%;
+  background-color: cacaca;
+  box-shadow: 7px 7px 12px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+  padding-top: 5%;
+ 
+}
+#s2 .container .row .col-7 {
+  overflow-y: scroll;
+}
+
+#s2 .container .row .col-7::-webkit-scrollbar {
+  width: 1px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+#log-table{
+  background-color: #e6e6e6;
+}
+#log-table thead{
+  color: snow;
+}
+
+#log-table thead{
+  background-color: grey;
+    border-top-left-radius: 4%;
+    border-top-right-radius: 4%;
+}
+#log-table tbody tr:first-child{
+  background-color: #a8fdba;
+    border-top-left-radius: 4%;
+    
 }

@@ -5,11 +5,13 @@ body {
   padding: 0px;
   margin: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #6ad0ff
+  background-color: #ececec;
 }
 .section{
   padding-top: 60px;
   height: 100vh;
+  background-color: #ececec;
+  min-height: 600px;
 }
 
 
@@ -24,7 +26,9 @@ body {
 }
 #log{background: transparent}
 #log_form{
-  background-color: snow
+  border-radius: 4%;
+  background-color: snow;
+  box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1), 0 15px 20px 0px rgba(0, 0, 0, 0.3);
 }
 
 /* admin_dashboard */
@@ -34,20 +38,80 @@ body {
 #get_collection_form{
   
 }
+.form-row input{
+  /* box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1), 0 15px 20px 0px rgba(0, 0, 0, 0.3); */
+}
 .form-control{
   margin: 6px;
 }
 
-#db-table{
-  background-color: #6ad0ff;
+/* Rows */
+#button-row{
+  position: absolute;
+  bottom: 10px;
+}
+#responce-row{
+  height: 70% !important;
+  /* background-color: yellow; */
+}
+
+
+#db-table .container{
+  position: relative;
+  background-color: snow;
+  border-radius: 4%;
+  height: 80%;
+  margin-top: 2%;
+  box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1), 0 15px 20px 0px rgba(0, 0, 0, 0.3);
+}
+
+.dataTables_wrapper{
+  position: relative;
+  background-color: #ffffff;
+  height: 80%;
+  box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1), 0 15px 20px 0px rgba(0, 0, 0, 0.3);
+}
+/* .dataTables_info{
+  position: absolute;
+  bottom: 10px;
+  float: left;
+}
+.dataTables_paginate, .paging_simple_numbers{
+  position: absolute;
+  bottom: 10px;
+  right: 0px;
+  float: right;
+} */
+#db-table .container .row{
+  /* height: inherit; */
+}
+#get_collection_form_col{
+  height: 10%;
 }
 
 #dtBasicExample_wrapper{
-  width: 100%;
-  /* background-color: snow; */
+  height: 100%;
+  width: 50%;
+ 
 }
+#table{
+  /* background-color: #33b5e5; */
+  overflow-x: scroll;
+}
+#table {
+  table-layout: fixed;
+  width: 100% !important;
+}
+#table td,
+#table th{
+  width: auto !important;
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 #db-table #table{
-  background-color: snow;
+  /* background-color: snow; */
 }
 #table tbody tr{
   cursor: pointer;

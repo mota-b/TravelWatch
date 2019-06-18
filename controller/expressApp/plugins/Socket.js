@@ -161,8 +161,8 @@ module.exports = function (crowd) {
                 }
                 
                 // UNCOMMENT TO SAVE in DB
-                // // Anymaw Saving message to database
-                // ssm.newMessage(socket_client.user, room, data)
+                // Anymaw Saving message to database
+                // ssm.newLocation(socket_client.user, room, data)
         })
         
 

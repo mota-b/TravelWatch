@@ -97,6 +97,7 @@ $(document).ready(function(){
 
                             let messageIcon = entity.entity_name+"\n["+loc_entity+"]"
                             mm.add_marker_entity(main_map, loc_entity, messageIcon)
+                            
 
                         }
                          
@@ -106,6 +107,68 @@ $(document).ready(function(){
             },
             
         });
+
+        // list entities item on click event
+        $(document).on("click", '#entities-list .list-group-item', (event) => {
+            
+
+            let target_id = event.target.id;
+
+            let target_index = 0;
+            // LOOP While
+            // (not finished with the list of entities)
+            //    AND 
+            // (The id is differenr from the target given)    
+            while(target_index< user.compute_data.entities.length && user.compute_data.entities[target_index]._id != target_id){
+                // console.log(markers[index].options.title.split("\n"));
+                target_index++
+            }
+
+            if(target_index<user.compute_data.entities.length){
+                // Set log entity info
+                $("#entity_log_name p").html(user.compute_data.entities[target_index].entity_name)
+                if(user.compute_data.entities[target_index].entity_type=="Smartphone"){
+                    
+                    $("#entity_log_icon").removeClass("fa-podcast")
+                    $("#entity_log_icon").addClass("fa-mobile")
+                }
+                else{
+                   
+                    $("#entity_log_icon").addClass("fa-mobile")
+                    $("#entity_log_icon").removeClass("fa-podcast")
+                }
+               
+                // Set log-entity history
+                $("#log-table tbody").html("")
+                user.compute_data.entities[target_index].location_history.forEach(location=>{
+                    $("#log-table tbody").prepend(
+                        // <tr>
+                        // <th scope="row">1</th>
+                        // <td>Mark</td>
+                        // <td>Otto</td>
+                        
+                        // </tr>
+                        $("<tr>")
+                        .append(
+                            $("<th>").attr({"scope":"row"}).append(location.date)
+                        ).append(
+                            $("<td>").append(location.lat_lon.lat)
+                        ).append(
+                            $("<td>").append(location.lat_lon.lng)
+                        )
+                    )
+                })
+                
+            }
+            
+            
+            $("#s2").css({
+                "display":"block"
+            })
+
+            $('html, body').animate({scrollTop:$('#s2').position().top}, 'slow');
+
+        })
     }
 
 
@@ -297,7 +360,8 @@ socketClientManager = {
         chat.on("entity_gone", function(data){
             if(data.entity_id&& $("#"+data.entity_id).hasClass("active")){
                 $("#"+data.entity_id).toggleClass("active")
-
+                
+                
                 // update the icon img
                 if(main_map.markers[1].getIcon().options.iconUrl == "/img/taxi_location-active.png"){
                     mm.update_marker_icon(main_map.markers[1],'/img/taxi_location-gone.png')
@@ -317,7 +381,7 @@ socketClientManager = {
 
 
           
-            let item_class = ""
+            
             // console.log("location from: ", data.entity_id)
             
             let entity_marker = mm.get_marker(main_map.markers, data.entity_name)
@@ -332,63 +396,93 @@ socketClientManager = {
                   
             }
             else{
-                // create one
+                // create one TODOOOOO
+                let icon
+                if(entity.entity_type=="Smartphone"){
+                    icon = "fa-mobile"
+                }
+                else{
+                    icon = "fa-podcast"
+                }
+                $("#entities-list ul").append(
+                    // <i class="far fa-check-circle"></i>
+                    
+                    "<li class='list-group-item' id='"+entity._id+"'>"
+                    +"   <div class='md-v-line'></div><i class='fas "+ icon +" mr-4'></i>"+entity.entity_name
+                    +"   <span><i class='fas fa-times-circle'></i></span>"
+                    +"</li>" 
+                )
+
+
+                // Add the entities last knewn location markers
+                if(entity.location_history.length>0){
+                    // we have at least 1 stored location
+                    // console.log(entity.location_history[entity.location_history.length-1]);
+                    // console.log(entity.location_history.length-1);
+                    
+                    let entity_location = entity.location_history[entity.location_history.length-1].lat_lon,
+                        loc_entity = [entity_location.lat, entity_location.lng];
+
+                    let messageIcon = entity.entity_name+"\n["+loc_entity+"]"
+                    mm.add_marker_entity(main_map, loc_entity, messageIcon)
+                    
+
+                }
             }
 
-            // Check if the contact is in the contact list
-
-            // Check if the location sender is in the entities list
-            // if (!contacts[data.sender]){
-            //     // Not in the Contact list ==> append to it
-            //     // contacts[data.sender] = {
-            //     //     "history": [data]
-            //     // }
-
-            //     // Not in the UI Contact list ==> append to it
-            //     console.log(contacts[data.sender].history);
-            //     console.log(contacts[data.sender].history.length);
+            // add the information to the log if it's the entity log
+            if( $("#s2").css("display")=="block" && $("#entity_log_name p").html()==data.entity_name){
                 
-            //     newContact(data.sender, contacts[data.sender].history[contacts[data.sender].history.length-1].msg)
-            // }
-            
-            // Pushing the message to the history of the contact
-            // contacts[data.contact].history.push({"msg":data.msg, "contact":data.contact})
-            
-            
-            // The focus is on the contact
-            // if($("#head-profile .name").text() == data.sender){
-                
-            //     // Appending own messagers
-            //     newMessage(data)
-                
-                
-            // }else{
-
-            //     // The focus is not on the contact ==> Not realy paying attention !!! notify to me
-                
-                
-            //     $(".meta p.name#"+data.from+" .badge").remove()
-            //     $(".meta p.name:contains('"+data.from+"')").attr({id: data.from})
-            //         .append(       
-            //             $("<span>").addClass("badge")
-            //                 .text("new").css({
-            //                     background: "red",
-            //                     color: "snow !important",
-            //                     height: "20px",
-            //                     width: "35px",
-            //                     right: "0px",
-            //                     position: "relative",
-            //                     float: "right",
-            //                 })
-            //         )
+               
+                $("#log-table tbody").prepend(
+                    // <tr>
+                    // <th scope="row">1</th>
+                    // <td>Mark</td>
+                    // <td>Otto</td>
                     
-            // }
-                
-                
-                
-         
+                    // </tr>
+                    $("<tr>")
+                    .append(
+                        $("<th>").attr({"scope":"row"}).append(data.new_location.date)
+                    ).append(
+                        $("<td>").append(data.new_location.lat_lon[0])
+                    ).append(
+                        $("<td>").append(data.new_location.lat_lon[1])
+                    )
+                )
 
-            // console.log(data)
+            }
+            
+
+            // Save the last location in the hystory list
+            let target_id = data.entity_id;
+            let target_index = 0;
+            // LOOP While
+            // (not finished with the list of entities)
+            //    AND 
+            // (The id is differenr from the target given)    
+            while(target_index< user.compute_data.entities.length && user.compute_data.entities[target_index]._id != target_id){
+                // console.log(markers[index].options.title.split("\n"));
+                target_index++
+            }
+            if(target_index<user.compute_data.entities.length){
+
+                // Update log-entity history
+               user.compute_data.entities[target_index].location_history.unshift({
+                    entity_id: data.entity_id,
+                    date: data.new_location.date,
+                    lat_lon:{
+                        lat:data.new_location.lat_lon[0],
+                        lng:data.new_location.lat_lon[1]
+                    }
+               })
+                
+            }
+            console.log(data);
+            
+
+            
+            
             
         })
 

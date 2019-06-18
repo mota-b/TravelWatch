@@ -1,36 +1,40 @@
 <%- include('./item_modal.ejs', {}) %>
 
 <div class="section" id="db-table">
-    <div class="container">
-        <h1>Admin Dash-Board</h1>
-      <div class="row">
+  <div class="container">
+    <h1>Admin Dash-Board</h1>
 
-        <!-- Reuest collection area -->
-        <div class="col-sm-12">
-          <!-- Default column sizing form -->
-          <form action="#" id="get_collection_form">
-            <!-- Grid row -->
-            <div class="form-row">
-              <!-- Grid column -->
-              <div class="col-4">
-                <!-- Default input -->
-                <input type="text" class="form-control"  name="Collection-name" placeholder="Collection name">
-              </div>
-              <!-- Grid column -->
-
-              <!-- Grid column -->
-              <div class="col-4">
-                <!-- Default input -->
-                <input type="submit" class="btn btn-md btn-secondary" value="request">
-              </div>
-              <!-- Grid column -->
-    
+    <!-- Row Request -->
+    <div id="request-row" class="row">
+      <!-- Reuest collection area -->
+      <div id="get_collection_form_col"  class="col-sm-12">
+        <!-- Default column sizing form -->
+        <form action="#" id="get_collection_form">
+          <!-- Grid row -->
+          <div class="form-row">
+            <!-- Grid column -->
+            <div class="col-4">
+              <!-- Default input -->
+              <input type="text" class="form-control"  name="Collection-name" placeholder="Collection name">
             </div>
-            <!-- Grid row -->
-          </form>
-          <!-- Default column sizing form -->
-        </div>
+            <!-- Grid column -->
 
+            <!-- Grid column -->
+            <div class="col-4">
+              <!-- Default input -->
+              <input type="submit" class="btn btn-md btn-secondary" value="request">
+            </div>
+            <!-- Grid column -->
+  
+          </div>
+          <!-- Grid row -->
+        </form>
+        <!-- Default column sizing form -->
+      </div><!-- END Reuest collection area -->
+    </div><!-- END Row Request -->
+    
+    <!-- Row Responce -->
+    <div id="responce-row" class="row">
         <!-- Responce collection area -->
         <div class="col-sm-12">
           <h2 id="collection_name" style="display:none"> collection name</h2>
@@ -48,14 +52,21 @@
         
         </div> -->
 
-        <table id="table" class="table table-striped table-bordered" width="100%">
+          <table id="table" class="table table-striped table-bordered" width="100%">
 
-        </table>
+          </table>
+        </div><!--END Responce collection area -->
 
-        <div class="col-sm-12">
-          <a id="add" class="btn-default btn-floating btn-lg "><i class="fas fa-plus"></i></a>
-        </div>
-        
+    </div><!-- END Row Responce -->
+      
+    <!-- Row Button -->
+    <div id="button-row" class="row">
+      <div class="col-sm-12">
+        <a id="add" class="btn-default btn-floating btn-lg "><i class="fas fa-plus"></i></a>
       </div>
-    </div>
+    
+    </div><!-- END Row Button -->
+    
+  </div>
+  
 </div>
