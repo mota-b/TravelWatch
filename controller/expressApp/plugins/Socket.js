@@ -145,8 +145,8 @@ module.exports = function (crowd) {
                     
                     
                     // Sending the data to the room 
-                    crowd.to(room).emit("entity_location", {entity_id: from_id, entity_name: socket_client.user.entity_name, new_location: data})
-                    crowd.to(room).emit("entity_active", {entity_id: from_id})
+                    crowd.to(room).emit("entity_location", {entity_id: from_id, entity_type: socket_client.user.entity_type, entity_name: socket_client.user.entity_name, new_location: data})
+                    crowd.to(room).emit("entity_active", {entity_id: from_id, entity_type: socket_client.user.entity_type, entity_name: socket_client.user.entity_name})
                 
                 }
                 else{
@@ -163,6 +163,7 @@ module.exports = function (crowd) {
                 // UNCOMMENT TO SAVE in DB
                 // Anymaw Saving message to database
                 // ssm.newLocation(socket_client.user, room, data)
+                // console.log(socket_client.user);
         })
         
 
@@ -244,7 +245,7 @@ module.exports = function (crowd) {
             // obviously an entity has an operator
             if(socket_client.user.operator){
                 let room = socket_client.user.operator
-                crowd.to(room).emit("entity_gone", {entity_id: socket_client.user._id})
+                crowd.to(room).emit("entity_gone", {entity_id: socket_client.user._id, entity_type: socket_client.user.entity_type, entity_name: socket_client.user.entity_name})
 
             } 
             

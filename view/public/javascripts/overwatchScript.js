@@ -340,19 +340,36 @@ socketClientManager = {
         
         // On entity active event
         chat.on("entity_active", function(data){
+            
+            
             if(data.entity_id&& !$("#"+data.entity_id).hasClass("active")){
+                // console.log("hambabak tactiva");
                 $("#"+data.entity_id).toggleClass("active")
                 
-                // update the icon img
-                if(main_map.markers[1].getIcon().options.iconUrl != "/img/taxi_location-active.png"){
-                    mm.update_marker_icon(main_map.markers[1],'/img/taxi_location-active.png')
-                }
+                
 
                 // update item status
                 if($("#"+data.entity_id).find("span .fas").hasClass("fa-times-circle")){
+                    
+                    
                     $("#"+data.entity_id).find("span .fas").toggleClass("fa-times-circle")
                     $("#"+data.entity_id).find("span .fas").toggleClass("fa-check-circle")
                 }
+            }else{
+                // console.log("sayi rani activ");
+            }
+
+
+            let target_marker =  mm.get_marker(main_map.markers, data.entity_name);
+            // update the icon img
+            // console.log( data.entity_name);
+            // console.log(target_marker);
+            
+            if( target_marker && target_marker.getIcon().options.iconUrl == "/img/taxi_location-gone.png"){
+                // console.log("3andi marker");
+                mm.update_marker_icon(target_marker,'/img/taxi_location-active.png')
+            }else{
+                // console.log("ma3andich marker wella l'icon raha nichen mactivya") ;
             }
         })
 
@@ -361,18 +378,21 @@ socketClientManager = {
             if(data.entity_id&& $("#"+data.entity_id).hasClass("active")){
                 $("#"+data.entity_id).toggleClass("active")
                 
-                
-                // update the icon img
-                if(main_map.markers[1].getIcon().options.iconUrl == "/img/taxi_location-active.png"){
-                    mm.update_marker_icon(main_map.markers[1],'/img/taxi_location-gone.png')
-                }
-
+               
                 // update item status
                 if($("#"+data.entity_id).find("span .fas").hasClass("fa-check-circle")){
                     $("#"+data.entity_id).find("span .fas").toggleClass("fa-check-circle")
                     $("#"+data.entity_id).find("span .fas").toggleClass("fa-times-circle")
                 }
             }
+
+
+            let target_marker =  mm.get_marker(main_map.markers, data.entity_name);
+            // update the icon img
+            if( target_marker && target_marker.getIcon().options.iconUrl == "/img/taxi_location-active.png"){
+                mm.update_marker_icon( target_marker,'/img/taxi_location-gone.png')
+            }
+
             
         })
 
@@ -382,7 +402,7 @@ socketClientManager = {
 
           
             
-            // console.log("location from: ", data.entity_id)
+           
             
             let entity_marker = mm.get_marker(main_map.markers, data.entity_name)
             if(entity_marker){
@@ -396,38 +416,46 @@ socketClientManager = {
                   
             }
             else{
+                // console.log("masebtahch nekriyih ?");
+                // console.log(data);
+                
+                
                 // create one TODOOOOO
                 let icon
-                if(entity.entity_type=="Smartphone"){
+                if(data.entity_type=="Smartphone"){
                     icon = "fa-mobile"
                 }
                 else{
                     icon = "fa-podcast"
                 }
-                $("#entities-list ul").append(
-                    // <i class="far fa-check-circle"></i>
+                // $("#entities-list ul").append(
+                //     // <i class="far fa-check-circle"></i>
                     
-                    "<li class='list-group-item' id='"+entity._id+"'>"
-                    +"   <div class='md-v-line'></div><i class='fas "+ icon +" mr-4'></i>"+entity.entity_name
-                    +"   <span><i class='fas fa-times-circle'></i></span>"
-                    +"</li>" 
-                )
+                //     "<li class='list-group-item' id='"+entity._id+"'>"
+                //     +"   <div class='md-v-line'></div><i class='fas "+ icon +" mr-4'></i>"+entity.entity_name
+                //     +"   <span><i class='fas fa-times-circle'></i></span>"
+                //     +"</li>" 
+                // )
 
 
                 // Add the entities last knewn location markers
-                if(entity.location_history.length>0){
+                // if(entity.location_history.length>0){
                     // we have at least 1 stored location
                     // console.log(entity.location_history[entity.location_history.length-1]);
                     // console.log(entity.location_history.length-1);
                     
-                    let entity_location = entity.location_history[entity.location_history.length-1].lat_lon,
-                        loc_entity = [entity_location.lat, entity_location.lng];
+                    let loc_entity = data.new_location.lat_lon;
 
-                    let messageIcon = entity.entity_name+"\n["+loc_entity+"]"
+                    let messageIcon = data.entity_name+"\n["+loc_entity+"]"
                     mm.add_marker_entity(main_map, loc_entity, messageIcon)
+
+                    let target_marker =  mm.get_marker(main_map.markers, data.entity_name);
+                    if(target_marker){
+                        mm.update_marker_icon(target_marker,'/img/taxi_location-active.png')
+                    }
                     
 
-                }
+                // }
             }
 
             // add the information to the log if it's the entity log

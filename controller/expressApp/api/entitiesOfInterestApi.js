@@ -49,6 +49,7 @@ router.post("/", restriction_0_1A, (req, res, next) => {
                     operator.save()
 
                     let token = Entity.generateJWT({
+                        _id: newEntity._id,
                         entity_name: newEntity.entity_name,
                         entity_type: newEntity.entity_type,
                         entity_mac: newEntity.entity_mac,

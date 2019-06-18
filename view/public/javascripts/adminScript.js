@@ -472,6 +472,8 @@ QRCode_events = () => {
     // Display the QR.Code form
     $("#displayQRC-form").on("click", (event) => {
         $("#qrc").html("")
+        $("#server_url").val("")
+
         $("#qrc-form").css({"display":"block"})
         
     })
