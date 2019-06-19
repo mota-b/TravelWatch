@@ -138,9 +138,14 @@ $(document).ready(function(){
                     $("#entity_log_icon").removeClass("fa-podcast")
                 }
                
+                
                 // Set log-entity history
                 $("#log-table tbody").html("")
                 user.compute_data.entities[target_index].location_history.forEach(location=>{
+                    
+                    console.log("9iw");
+                    console.log(location);
+               
                     $("#log-table tbody").prepend(
                         // <tr>
                         // <th scope="row">1</th>
@@ -151,6 +156,8 @@ $(document).ready(function(){
                         $("<tr>")
                         .append(
                             $("<th>").attr({"scope":"row"}).append(location.date)
+                        ).append(
+                            $("<td>").append(location.provider)
                         ).append(
                             $("<td>").append(location.lat_lon.lat)
                         ).append(
@@ -473,6 +480,8 @@ socketClientManager = {
                     .append(
                         $("<th>").attr({"scope":"row"}).append(data.new_location.date)
                     ).append(
+                        $("<td>").append(data.new_location.provider)
+                    ).append(
                         $("<td>").append(data.new_location.lat_lon[0])
                     ).append(
                         $("<td>").append(data.new_location.lat_lon[1])
@@ -499,6 +508,7 @@ socketClientManager = {
                user.compute_data.entities[target_index].location_history.unshift({
                     entity_id: data.entity_id,
                     date: data.new_location.date,
+                    provider:data.new_location.provider,
                     lat_lon:{
                         lat:data.new_location.lat_lon[0],
                         lng:data.new_location.lat_lon[1]
