@@ -73,7 +73,7 @@ function user_nav(){
             case "c_manager":
                 user_nav = user_nav 
                 +"          <a class='dropdown-item' href='/company/manage'>Manage</a>"
-                +"          <a class='dropdown-item' href='/company/profile'>Profile</a>"  
+                // +"          <a class='dropdown-item' href='/company/profile'>Profile</a>"  
             break;
 
             case "operator":

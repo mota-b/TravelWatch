@@ -158,18 +158,21 @@ router.post("/reg/company", (req, res, next) => {
                             console.log(
                                 "fail to send mail :" + err.message
                             );
-                            res.status(500).json({
-                                message:
-                                    "fail to send mail :" +
-                                    err.message
-                            });
+                            // res.status(500).json({
+                            //     message:
+                            //         "fail to send mail :" +
+                            //         err.message
+                            // });
                         }
                         else{
-                            res.json({error : {message: "error sending confirmation email"}})
+                            // res.json({error : {message: "error sending confirmation email"}})
+                        
+                            res.json({redirect:"/login/confirmation"})
                         }
+
                     });
     
-                    res.json({redirect:"/login/confirmation"})
+                    
     
                 }
                 // cypher error ocured 

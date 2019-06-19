@@ -99,7 +99,7 @@ module.exports = function (crowd) {
          */
         // On contact list event 
         socket_client.on("entity_location", (data) =>{
-            // console.log(data);
+            console.log(data);
 
            
             // TODO change room name to operator id

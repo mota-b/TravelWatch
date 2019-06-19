@@ -20,5 +20,15 @@ router.get('/overwatch', function(req, res, next) {
   });
 });
 
+/* GET Profile page. */
+router.get('/profile', function(req, res, next) {
+  let {links, scripts} = require("../plugins/PagesManager").style_and_scripts("company");
+  res.render('companyViews/company_manageView', { 
+    title: 'manage', 
+    links: links,
+    scripts: scripts
+  });
+});
+
 
 module.exports = router;

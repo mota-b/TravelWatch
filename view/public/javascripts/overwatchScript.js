@@ -407,7 +407,7 @@ socketClientManager = {
         chat.on("entity_location", function(data){
 
 
-          
+            
             
            
             
@@ -465,57 +465,61 @@ socketClientManager = {
                 // }
             }
 
-            // add the information to the log if it's the entity log
-            if( $("#s2").css("display")=="block" && $("#entity_log_name p").html()==data.entity_name){
-                
-               
-                $("#log-table tbody").prepend(
-                    // <tr>
-                    // <th scope="row">1</th>
-                    // <td>Mark</td>
-                    // <td>Otto</td>
+            if(data.new_location.lat_lon[0] !="N/A"){
+                // add the information to the log if it's the entity log
+                if( $("#s2").css("display")=="block" && $("#entity_log_name p").html()==data.entity_name){
                     
-                    // </tr>
-                    $("<tr>")
-                    .append(
-                        $("<th>").attr({"scope":"row"}).append(data.new_location.date)
-                    ).append(
-                        $("<td>").append(data.new_location.provider)
-                    ).append(
-                        $("<td>").append(data.new_location.lat_lon[0])
-                    ).append(
-                        $("<td>").append(data.new_location.lat_lon[1])
-                    )
-                )
-
-            }
-            
-
-            // Save the last location in the hystory list
-            let target_id = data.entity_id;
-            let target_index = 0;
-            // LOOP While
-            // (not finished with the list of entities)
-            //    AND 
-            // (The id is differenr from the target given)    
-            while(target_index< user.compute_data.entities.length && user.compute_data.entities[target_index]._id != target_id){
-                // console.log(markers[index].options.title.split("\n"));
-                target_index++
-            }
-            if(target_index<user.compute_data.entities.length){
-
-                // Update log-entity history
-               user.compute_data.entities[target_index].location_history.unshift({
-                    entity_id: data.entity_id,
-                    date: data.new_location.date,
-                    provider:data.new_location.provider,
-                    lat_lon:{
-                        lat:data.new_location.lat_lon[0],
-                        lng:data.new_location.lat_lon[1]
-                    }
-               })
                 
+                    $("#log-table tbody").prepend(
+                        // <tr>
+                        // <th scope="row">1</th>
+                        // <td>Mark</td>
+                        // <td>Otto</td>
+                        
+                        // </tr>
+                        $("<tr>")
+                        .append(
+                            $("<th>").attr({"scope":"row"}).append(data.new_location.date)
+                        ).append(
+                            $("<td>").append(data.new_location.provider)
+                        ).append(
+                            $("<td>").append(data.new_location.lat_lon[0])
+                        ).append(
+                            $("<td>").append(data.new_location.lat_lon[1])
+                        )
+                    )
+
+                }
+                
+
+                // Save the last location in the hystory list
+                let target_id = data.entity_id;
+                let target_index = 0;
+                // LOOP While
+                // (not finished with the list of entities)
+                //    AND 
+                // (The id is differenr from the target given)    
+                while(target_index< user.compute_data.entities.length && user.compute_data.entities[target_index]._id != target_id){
+                    // console.log(markers[index].options.title.split("\n"));
+                    target_index++
+                }
+                if(target_index<user.compute_data.entities.length){
+
+                    // Update log-entity history
+                user.compute_data.entities[target_index].location_history.unshift({
+                        entity_id: data.entity_id,
+                        date: data.new_location.date,
+                        provider:data.new_location.provider,
+                        lat_lon:{
+                            lat:data.new_location.lat_lon[0],
+                            lng:data.new_location.lat_lon[1]
+                        }
+                })
+                    
+                }
             }
+
+            
             console.log(data);
             
 

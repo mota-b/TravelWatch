@@ -132,16 +132,19 @@ let mm = {
         map_obj.markers.push(marker);
     },
     add_marker_entity : function(map_obj, location, name){
-        var icon = new EntityIcon({iconUrl: '/img/taxi_location-gone.png'});
         
-        // Create the marker
-        let marker = new L.marker(location,
-            {
-                title: name,
-                icon: icon
-            }
-        ).addTo(map_obj.map);
+        if(location[0]!="N/A"){
+            var icon = new EntityIcon({iconUrl: '/img/taxi_location-gone.png'});
+            
+            // Create the marker
+            let marker = new L.marker(location,
+                {
+                    title: name,
+                    icon: icon
+                }
+            ).addTo(map_obj.map);
 
+      
         //Set marker events
         // marker.on('drag', function(e){
         //     arcs.forEach(function(arc){
@@ -168,14 +171,15 @@ let mm = {
         // });
 
 
-        //Bind popup to the marker 
-        var popup = L.popup()
-        .setLatLng(marker._latlng)
-        .setContent('<p>'+ marker.options.title +'</p>');
-        marker.bindPopup(popup)
+            //Bind popup to the marker 
+            var popup = L.popup()
+            .setLatLng(marker._latlng)
+            .setContent('<p>'+ marker.options.title +'</p>');
+            marker.bindPopup(popup)
 
-        //Add ref to the markers list
-        map_obj.markers.push(marker);
+            //Add ref to the markers list
+            map_obj.markers.push(marker);
+        }
     },
     // Update Icon
     update_marker_icon: (marker, img) => {

@@ -28,118 +28,18 @@ function c_manager_dashBoard (){
 
     // Database config  
     collection = [] ;
-    $("#get_collection_form").submit(function(event){
-        event.preventDefault()
-
-        collection = [] ;
-        api_manager.getCollection($("input[name=Collection-name]").val(), collection)
-
-    })
+    data_table = null
     
-    // JSON editor config
-    $("#jsoneditor").html("")
-    container = document.getElementById("jsoneditor");
-    container_options = {};
-    editor = new JSONEditor(container, container_options);
+    // jQuery action event
+    collection_events()
 
-
-    // JSON item Selection
-    $(document).on("click", '#dtBasicExample tbody tr', (event) => {
-        // console.log($(event.target));
-        // console.log($(this));
-        
-        Selected_item_index = $(event.target)["0"]._DT_CellIndex.row;
-        
-        // create the editor
-        $("#jsoneditor").html("")
-        // editor = new JSONEditor(container, container_options);
-
-        // set json
-        editor.set(collection[Selected_item_index]);
-
-        // get json
-        Selected_item = editor.get();
-
-    })
-
-    // JSON item add
-    $(document).on("click", '#add', (event) => {
-        event.preventDefault();
-        console.log("new item");
-        
-        var container = document.getElementById("jsoneditor");
-        var options = {};
-        var editor = new JSONEditor(container, options);
-
-        // set json
-        var json = {
-            "Array": [1, 2, 3],
-            "Boolean": true,
-            "Null": null,
-            "Number": 123,
-            "Object": {"a": "b", "c": "d"},
-            "String": "Hello World"
-        };
-        editor.set(json);
-
-        // get json
-        var json = editor.get();
-       
-        // create the editor
-        //$("#jsoneditor").html("")
-        // var container = document.getElementById("jsoneditor");
-        // var options = {};
-        // let editor = new JSONEditor(container, options);
-
-        // // set json
-        // editor.set({
-        //     username:"",
-        //     password:""
-        // });
-
-        // get json
-        Selected_item = editor.get();
-
-       
-    })
-
-    // JSON item update
-    $(document).on("click", '#update', (event) => {
-        event.preventDefault();
-
-        // get json
-        let updated_item = editor.get(),
-            toUpdate = {},
-            json_isEmpty = true;  
-        // console.log(Selected_item);
-        // console.log(updated_item);
-        
-        Object.keys(Selected_item).forEach(function(key) {
-            if(updated_item[key]!=Selected_item[key]){
-                if(json_isEmpty) json_isEmpty = false
-                toUpdate[key] = updated_item[key]
-                
-            }
-        });
-        
-        if(!json_isEmpty){
-            api_manager.updateItem($("#collection_name").html(), Selected_item._id, toUpdate)
-        }        
-    })
-
-    // Json item Delete
-    $(document).on("click", '#delete', (event) => {
-        event.preventDefault();
-
-        
-        // get json
-        api_manager.deleteItem($("#collection_name").html(), Selected_item._id)
-        
-    })
+    // jQuery QRCode event
+    QRCode_events()
 }
 
 
 // API request manager
+// jQuery API request manager
 let api_manager = {
     
     // Get a collection
@@ -160,24 +60,52 @@ let api_manager = {
                 }
                 else{
 
-                    //collection = []
                     if(data.collection && data.collection.length> 0){
+                        
+                        // Set the collection
                         data.collection.forEach((item) => {
                             collection.push(item)
                         });
-
-                        
-                        
                     }else{
                         alert("Empty data responce")
-                        
                     }
 
                     // Config the ui table
                     $("#collection_name").html($("input[name=Collection-name]").val()).css({display:'block'})
                     $("#add").css({display:'inline-block'})
+                    
+                    // if (data_table!=null) {
+                    //     // redraw here to clear the table from previeu collection
+                    //     //data_table.draw()
+                    //     data_table.data().clear()
+                    // }
+                    
+
+                    // // Set the jQuery table
                     collection_schema = data.schema
-                    data_table = tableConfig(collection_name, collection)
+                    new_item_schema = data.new_item_schema
+                    // data_table = tableConfig(collection_name, collection)
+
+                    let columns = [],
+                    dataset = []
+                    
+                    // Set the collumns
+                    collection_schema.forEach(column => {
+                        columns.push({ title: column })
+                    });
+                    // Set the datataSet
+                    collection.forEach(item => {
+                        
+                        let data_row = []
+                        collection_schema.forEach(key => {    
+                            data_row.push(item[key])
+                        });
+                        dataset.push(data_row)
+                    });
+                    
+                    // Creatae the datataTable
+                    table_manager.createTable(columns, dataset)
+                    
                     
                 }
             },
@@ -185,9 +113,8 @@ let api_manager = {
         });
 
     },
-
     // Get an item
-    getItem : (collection_name, item_id, item) => {
+    getItem : (collection_name, item_id) => {
         // Request a collection from the server
         $.ajax( {
             url:'/api/'+collection_name+'/'+item_id,
@@ -208,7 +135,72 @@ let api_manager = {
         });
 
     },
+    // Create an item
+    createItem : (collection_name, item) =>{
+        $.ajax( {
+            url:'/api/'+collection_name+'/',
+            type:"POST",
+            headers: {
+                token: user.token
+            },
+            data:{
+                "newItem": JSON.stringify(item)
+            },
+            
+            success: function(data) { 
+                
+                if (data.error){ 
+                    // console.log(data);
+                    
+                    alert(data.error.message)
+                }
+                else{
+                    
+                    if(data.isCreated){
+                        console.log(data);
+                        
+                        let editorItem = editor.get(),
+                        createdItem = {};
+                        
+                        
+                        let new_row = []
+                        collection_schema.forEach(function(key) {
+                            console.log(key);
+                            
+                            if(key == "_id"){
+                                new_row.push(data._id)
+                                createdItem[key] = data._id
+                            }else{
+                                
+                                createdItem[key] = editorItem[key]
+                                new_row.push(createdItem[key])
+                                
+                                
+                                
+                            }
+                        });
 
+                        // special entities case
+                        if(data.entity_token){
+                            new_row.push(data.entity_token)
+                            createdItem.entity_token = data.entity_token
+                        }
+                        if(item.company_location){
+                            console.log("yes");
+                            createdItem.company_location = item.company_location;
+                        }
+                        
+
+                        collection.push(createdItem) 
+
+                        // add item in the dataTable
+                        table_manager.addItem(new_row)
+                    }
+                }
+            },
+            
+        });
+    },
     // Update an item
     updateItem : (collection_name, item_id, item) =>{
         $.ajax( {
@@ -234,19 +226,21 @@ let api_manager = {
                         collection[Selected_item_index] = updatedItem
                         
                         let i = 0;
+                        let new_row = []
                         collection_schema.forEach(function(key) {
-                            $("#dtBasicExample tbody").find("tr").eq(Selected_item_index)
-                                .find("td").eq(i).text(collection[Selected_item_index][key])
-                            i = i+1    
+                            new_row.push(collection[Selected_item_index][key])
                         });
                         
+
+                        // Update the table item
+                        table_manager.updateItem(Selected_item_index, new_row)
+       
                     }
                 }
             },
             
         });
     },
-
     // Delete an item
     deleteItem : (collection_name, item_id) =>{
         
@@ -268,13 +262,14 @@ let api_manager = {
                 else{
                     if(data.isDeleted){
 
-                        /* remove the row from the ui*/
+                        /* remove the row from the ui and the collection*/
                         // remove from collection
                         collection.splice(Selected_item_index, 1)
-                        // remove from table to prevent reload the hole collection
-                        data_table.row(Selected_item_index).remove()
-                        // re draw the table (not a reload just re draw) 
-                        data_table.draw()
+                        
+                        // remove from the table
+                        table_manager.deleteItem(Selected_item_index)
+                        
+                        
                     }
                 }
             },
@@ -285,45 +280,189 @@ let api_manager = {
     }
 }
 
-// Database config
-tableConfig = (collection_name, collection) =>{
-
-    //let col = collection
-    
-
-    // Clearing and building the table head
-    $('#dtBasicExample').find("thead tr").html("")
-    
-    collection_schema.forEach((key) =>{
-        $('#dtBasicExample').find("thead tr").append(
-            $("<th>").addClass("th-sm").text(key)
-        )
-    })
-
-    // Clearing and building the table body
-    $('#dtBasicExample').find("tbody").html("")
-    collection.forEach(function (item) {
-        //console.log(item);
-        $('#dtBasicExample').find("tbody").append(
-            $("<tr>").addClass("waves-effect waves-light trow")
-                    .attr( {
-                        "data-toggle":"modal",
-                        "data-target":"#exampleModalCenter"
-                    })
-        )
-        collection_schema.forEach((key) =>{
-            $('#dtBasicExample').find("tbody tr").last().append(
-                $("<td>").addClass("th-sm").text(item[key])
-            )
+// jQuery dataTable  manager
+table_manager = {
+    // Create the dataTable
+    createTable: (columns, dataSet) => {
+        if(data_table!=null){
+            data_table.clear().destroy().draw()
+            $("#table").html("")
+        }
+        
+        // initialise the table
+        data_table = $("#table").DataTable({
+            data: dataSet,
+            columns: columns
         })
-    })
-    
-    
 
-    let table = $('#dtBasicExample').DataTable();
-    $('.dataTables_length').addClass('bs-select');    
+    },
+    // Update Item in the dataTable
+    addItem: (item) => {
+        data_table.row.add(item).draw()
+    },
+    // Update Item in the dataTable
+    updateItem: (index, new_row) => {
+        data_table.row(index).data(new_row).draw()
+    },
+    // Remove Item from the dataTable
+    deleteItem: (index) => {
+        data_table.row(index).remove().draw()
+    }
     
+},
+// jQuery Collection action events
+collection_events = () => {
+    // API Collection Request
+    $("#get_collection_form").submit(function(event){
+        event.preventDefault()
+
+        collection = []
+        collection_schema = []
+        api_manager.getCollection($("input[name=Collection-name]").val(), collection)
+
+    })
+   
+    // JSON item Selection
+    $(document).on("click", '#table tbody tr', (event) => {
+        $("#qrc-form").css({"display":"none"})
+        $("#validate").css({"display":"none"})
+        if($("#collection_name").html() == "entities"){
+            $("#displayQRC-form").css({"display":"inline-block"})
+        }
+        else{
+            $("#displayQRC-form").css({"display":"none"})
+        }
+        
+        $("#update").css({"display":"inline-block"})
+        $("#delete").css({"display":"inline-block"})
+
+        Selected_item_index = $(event.target)["0"]._DT_CellIndex.row;
+        
+        // create the editor
+        $("#jsoneditor").html("")
+        var container = document.getElementById("jsoneditor");
+        var options = {};
+        editor = new JSONEditor(container, options);
+
+        // set json
+        editor.set(collection[Selected_item_index]);
+
+        // get json
+        Selected_item = editor.get();
+
+        //display the modal
+        $("#exampleModalCenter").modal("toggle")
+
+
+    })
+
+    // JSON item update
+    $(document).on("click", '#update', (event) => {
+        event.preventDefault();
+
+        // get json
+        let updated_item = editor.get(),
+            toUpdate = {},
+            json_isEmpty = true;  
+        
+        Object.keys(Selected_item).forEach(function(key) {
+            if(updated_item[key]!=Selected_item[key]){
+                if(json_isEmpty) json_isEmpty = false
+                toUpdate[key] = updated_item[key]
+                
+            }
+        });
+        
+        if(!json_isEmpty){
+            api_manager.updateItem($("#collection_name").html(), Selected_item._id, toUpdate)
+        }  
     
-    return table;
+    })
+
+    // Json item Delete
+    $(document).on("click", '#delete', (event) => {
+        event.preventDefault();
+        
+        // get json
+        api_manager.deleteItem($("#collection_name").html(), Selected_item._id)
+    
+    })
+
+    // Json item add
+    $(document).on("click", '#add', (event) => {
+        event.preventDefault();
+
+        // create the editor
+        $("#qrc-form").css({"display":"none"})
+        $("#jsoneditor").html("")
+        var container = document.getElementById("jsoneditor");
+        var options = {};
+        editor = new JSONEditor(container, options);
+
+        // set json
+        editor.set(new_item_schema);
+
+        //display the modal
+        $("#validate").css({"display":"inline-block"})
+        $("#update").css({"display":"none"})
+        $("#delete").css({"display":"none"})
+        
+        $("#exampleModalCenter").modal("toggle")
+
+    })
+
+    // Json new item validation
+    $(document).on("click", '#validate', (event) => {
+        event.preventDefault();
+
+        
+        // get json
+        let new_item = editor.get(),
+            passwordRegex = /^[A-Z]+\w{2,}$/;
+
+            
+        console.log(new_item);
+        if(new_item.password && !new_item.password.match(passwordRegex)){
+            // This is an email
+            alert("wrong password format"+
+            "\n1) the password must start with capital letter"+
+            "\n2) the password must be longer than 3 letters");
+        }else{
+            if(new_item !=null){
+                api_manager.createItem($("#collection_name").html(), new_item)
+            }
+        }
+        
+    })
+},
+
+// JQuery QRCode event
+QRCode_events = () => {
+    
+    // Display the QR.Code form
+    $("#displayQRC-form").on("click", (event) => {
+        $("#qrc").html("")
+        $("#server_url").val("")
+
+        $("#qrc-form").css({"display":"block"})
+        
+    })
+
+    // Display the QR.Code
+    $("#generate-qrc").on("click", (event) => {
+        event.preventDefault();
+
+        $("#qrc").html("")
+        // console.log(Selected_item);
+        jQuery("#qrc").qrcode({
+            //render:"table"
+            width: 256,
+            height: 256,
+            text: JSON.stringify({
+                token: Selected_item.entity_token,
+                server_url: $("#server_url").val()
+            })
+        });
+    })
 }
 
